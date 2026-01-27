@@ -355,6 +355,26 @@
       margin-top: 15px;
       color: var(--text-muted);
     }
+
+    .comments-section {
+      background: var(--container-bg);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px var(--shadow-color);
+      max-width: 500px;
+      width: 100%;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .comments-section h2 {
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    #disqus_thread {
+      color: var(--text-primary);
+    }
   </style>
 </head>
 <body>
@@ -415,6 +435,22 @@
       <div id="formStatusMessage"></div>
     </form>
   </div>
+
+  <div class="comments-section">
+    <h2>💬 댓글</h2>
+    <div id="disqus_thread"></div>
+  </div>
+
+  <script>
+    // Disqus
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://product-builder-9.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
   <script>
     const menus = {
