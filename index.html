@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로또 번호 추천</title>
+  <title>오늘 저녁 뭐먹지?</title>
   <style>
     * {
       margin: 0;
@@ -13,37 +13,39 @@
 
     :root {
       color-scheme: light dark;
-      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --bg-gradient: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
       --container-bg: #ffffff;
       --text-primary: #2b2b2b;
       --text-muted: #666666;
       --text-placeholder: #999999;
       --history-bg: #f5f5f5;
-      --info-bg: #f0f4ff;
+      --info-bg: #fff5f0;
       --info-text: #555555;
       --shadow-color: rgba(0, 0, 0, 0.3);
-      --btn-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --btn-shadow: rgba(102, 126, 234, 0.4);
+      --btn-gradient: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+      --btn-shadow: rgba(255, 107, 107, 0.4);
       --toggle-bg: rgba(255, 255, 255, 0.7);
       --toggle-text: #333333;
       --toggle-border: rgba(0, 0, 0, 0.08);
+      --card-border: #ffe0d0;
     }
 
     [data-theme="dark"] {
-      --bg-gradient: radial-gradient(circle at top, #222844 0%, #0f111a 55%, #08090f 100%);
-      --container-bg: #151824;
+      --bg-gradient: radial-gradient(circle at top, #3d2a2a 0%, #1a1212 55%, #0f0a0a 100%);
+      --container-bg: #1f1818;
       --text-primary: #f1f1f3;
       --text-muted: #b5b7c2;
       --text-placeholder: #8c90a3;
-      --history-bg: #1f2433;
-      --info-bg: #1b2336;
+      --history-bg: #2a2020;
+      --info-bg: #2a1f1f;
       --info-text: #c6c9d6;
       --shadow-color: rgba(0, 0, 0, 0.55);
-      --btn-gradient: linear-gradient(135deg, #5f5cff 0%, #28b2f3 100%);
-      --btn-shadow: rgba(40, 178, 243, 0.4);
-      --toggle-bg: rgba(21, 24, 36, 0.8);
+      --btn-gradient: linear-gradient(135deg, #ff7b4a 0%, #e85555 100%);
+      --btn-shadow: rgba(232, 85, 85, 0.4);
+      --toggle-bg: rgba(31, 24, 24, 0.8);
       --toggle-text: #f1f1f3;
       --toggle-border: rgba(255, 255, 255, 0.12);
+      --card-border: #3a2828;
     }
 
     body {
@@ -51,9 +53,11 @@
       background: var(--bg-gradient);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
+      gap: 20px;
       transition: background 0.3s ease;
     }
 
@@ -78,7 +82,7 @@
 
     h1 {
       color: var(--text-primary);
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
 
     .subtitle {
@@ -87,48 +91,67 @@
       font-size: 0.95rem;
     }
 
-    .lotto-numbers {
+    .menu-display {
+      min-height: 150px;
       display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 30px 0;
-      min-height: 70px;
-    }
-
-    .ball {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 1.3rem;
+      margin: 30px 0;
+    }
+
+    .menu-card {
+      background: var(--info-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      padding: 25px 40px;
+      animation: popIn 0.4s ease-out;
+    }
+
+    .menu-emoji {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+
+    .menu-name {
+      font-size: 1.8rem;
       font-weight: bold;
-      color: white;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      animation: popIn 0.3s ease-out;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .menu-category {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      background: var(--history-bg);
+      border-radius: 20px;
+      display: inline-block;
     }
 
     @keyframes popIn {
       0% {
-        transform: scale(0);
+        transform: scale(0) rotate(-10deg);
         opacity: 0;
       }
       70% {
-        transform: scale(1.1);
+        transform: scale(1.05) rotate(2deg);
       }
       100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
       }
     }
 
-    .ball.yellow { background: linear-gradient(145deg, #ffc107, #ff9800); }
-    .ball.blue { background: linear-gradient(145deg, #2196f3, #1976d2); }
-    .ball.red { background: linear-gradient(145deg, #f44336, #d32f2f); }
-    .ball.gray { background: linear-gradient(145deg, #9e9e9e, #757575); }
-    .ball.green { background: linear-gradient(145deg, #4caf50, #388e3c); }
+    @keyframes shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    .shaking {
+      animation: shake 0.1s ease-in-out infinite;
+    }
 
     .generate-btn {
       background: var(--btn-gradient);
@@ -169,32 +192,29 @@
 
     .history-item {
       display: flex;
-      gap: 5px;
-      padding: 10px;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 15px;
       background: var(--history-bg);
       border-radius: 10px;
       margin-bottom: 8px;
-      justify-content: center;
       transition: background 0.3s ease;
     }
 
-    .history-item .mini-ball {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: white;
+    .history-item .emoji {
+      font-size: 1.5rem;
     }
 
-    .mini-ball.yellow { background: #ffc107; }
-    .mini-ball.blue { background: #2196f3; }
-    .mini-ball.red { background: #f44336; }
-    .mini-ball.gray { background: #9e9e9e; }
-    .mini-ball.green { background: #4caf50; }
+    .history-item .name {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .history-item .category {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-left: auto;
+    }
 
     .info {
       margin-top: 20px;
@@ -208,6 +228,7 @@
 
     .placeholder {
       color: var(--text-placeholder);
+      font-size: 1.1rem;
     }
 
     .theme-toggle {
@@ -226,103 +247,296 @@
     .theme-toggle:hover {
       transform: translateY(-1px);
     }
+
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--card-border);
+      background: var(--container-bg);
+      color: var(--text-primary);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--info-bg);
+    }
+
+    .filter-btn.active {
+      background: var(--btn-gradient);
+      color: white;
+      border-color: transparent;
+    }
+
+    .contact-form-section {
+      background: var(--container-bg);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px var(--shadow-color);
+      max-width: 500px;
+      width: 100%;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-form-section h2 {
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .contact-form-section .description {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--card-border);
+      border-radius: 10px;
+      background: var(--container-bg);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #ff6b6b;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background: var(--btn-gradient);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px var(--btn-shadow);
+    }
+
+    #formStatusMessage {
+      margin-top: 15px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎱 로또 번호 추천</h1>
+      <h1>🍽️ 오늘 저녁 뭐먹지?</h1>
       <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
         🌙 다크
       </button>
     </div>
-    <p class="subtitle">행운의 번호를 뽑아보세요!</p>
+    <p class="subtitle">결정장애 탈출! 메뉴를 추천해드릴게요</p>
 
-    <div class="lotto-numbers" id="lottoNumbers">
-      <p class="placeholder" style="align-self: center;">버튼을 눌러 번호를 생성하세요</p>
+    <div class="category-filter">
+      <button class="filter-btn active" data-category="all">전체</button>
+      <button class="filter-btn" data-category="korean">한식</button>
+      <button class="filter-btn" data-category="chinese">중식</button>
+      <button class="filter-btn" data-category="japanese">일식</button>
+      <button class="filter-btn" data-category="western">양식</button>
+      <button class="filter-btn" data-category="snack">분식</button>
     </div>
 
-    <button class="generate-btn" onclick="generateLotto()">번호 생성</button>
+    <div class="menu-display" id="menuDisplay">
+      <p class="placeholder">버튼을 눌러 메뉴를 추천받으세요!</p>
+    </div>
+
+    <button class="generate-btn" onclick="recommendMenu()">메뉴 추천받기</button>
 
     <div class="history" id="historySection" style="display: none;">
-      <h3>📋 이전 생성 번호</h3>
+      <h3>📋 이전 추천 메뉴</h3>
       <div class="history-list" id="historyList"></div>
     </div>
 
     <div class="info">
-      💡 1~45 중 랜덤한 6개의 번호가 생성됩니다.<br>
-      번호 색상: 1-10 노랑 | 11-20 파랑 | 21-30 빨강 | 31-40 회색 | 41-45 초록
+      💡 카테고리를 선택하면 해당 종류의 음식만 추천받을 수 있어요!
     </div>
   </div>
 
+  <div class="contact-form-section">
+    <h2>제휴 문의</h2>
+    <p class="description">
+      제휴 문의는 아래 양식을 통해 보내주시면 감사하겠습니다.
+      최대한 빠르게 답변 드리겠습니다.
+    </p>
+    <form id="contactForm" action="https://formspree.io/f/mnjdgdlr" method="POST">
+      <div class="form-group">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="message">메시지:</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">보내기</button>
+      <div id="formStatusMessage"></div>
+    </form>
+  </div>
+
   <script>
+    const menus = {
+      korean: [
+        { name: '김치찌개', emoji: '🍲' },
+        { name: '된장찌개', emoji: '🥘' },
+        { name: '삼겹살', emoji: '🥓' },
+        { name: '불고기', emoji: '🥩' },
+        { name: '비빔밥', emoji: '🍚' },
+        { name: '칼국수', emoji: '🍜' },
+        { name: '순두부찌개', emoji: '🍲' },
+        { name: '제육볶음', emoji: '🍖' },
+        { name: '갈비찜', emoji: '🍖' },
+        { name: '삼계탕', emoji: '🐔' },
+        { name: '부대찌개', emoji: '🍲' },
+        { name: '감자탕', emoji: '🍖' },
+      ],
+      chinese: [
+        { name: '짜장면', emoji: '🍝' },
+        { name: '짬뽕', emoji: '🍜' },
+        { name: '탕수육', emoji: '🍖' },
+        { name: '마파두부', emoji: '🌶️' },
+        { name: '볶음밥', emoji: '🍳' },
+        { name: '양장피', emoji: '🥗' },
+        { name: '깐풍기', emoji: '🍗' },
+        { name: '유린기', emoji: '🐔' },
+      ],
+      japanese: [
+        { name: '초밥', emoji: '🍣' },
+        { name: '라멘', emoji: '🍜' },
+        { name: '돈카츠', emoji: '🍖' },
+        { name: '우동', emoji: '🍲' },
+        { name: '카레', emoji: '🍛' },
+        { name: '규동', emoji: '🍚' },
+        { name: '오코노미야키', emoji: '🥞' },
+        { name: '타코야키', emoji: '🐙' },
+      ],
+      western: [
+        { name: '파스타', emoji: '🍝' },
+        { name: '피자', emoji: '🍕' },
+        { name: '스테이크', emoji: '🥩' },
+        { name: '햄버거', emoji: '🍔' },
+        { name: '리조또', emoji: '🍚' },
+        { name: '샐러드', emoji: '🥗' },
+        { name: '치킨', emoji: '🍗' },
+        { name: '샌드위치', emoji: '🥪' },
+      ],
+      snack: [
+        { name: '떡볶이', emoji: '🌶️' },
+        { name: '순대', emoji: '🫓' },
+        { name: '튀김', emoji: '🍤' },
+        { name: '김밥', emoji: '🍙' },
+        { name: '라면', emoji: '🍜' },
+        { name: '어묵', emoji: '🍢' },
+        { name: '핫도그', emoji: '🌭' },
+        { name: '쫄면', emoji: '🍜' },
+      ]
+    };
+
+    const categoryNames = {
+      korean: '한식',
+      chinese: '중식',
+      japanese: '일식',
+      western: '양식',
+      snack: '분식'
+    };
+
+    let selectedCategory = 'all';
     let history = [];
-    const themeToggle = document.getElementById('themeToggle');
-    const root = document.documentElement;
 
-    function applyTheme(theme) {
-      root.setAttribute('data-theme', theme);
-      const isDark = theme === 'dark';
-      themeToggle.textContent = isDark ? '☀️ 라이트' : '🌙 다크';
-      themeToggle.setAttribute('aria-pressed', String(isDark));
-      localStorage.setItem('theme', theme);
-    }
-
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        applyTheme(savedTheme);
-        return;
-      }
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(prefersDark ? 'dark' : 'light');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = root.getAttribute('data-theme') || 'light';
-      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    // Category filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedCategory = btn.dataset.category;
+      });
     });
 
-    initTheme();
+    function getRandomMenu() {
+      let menuList = [];
 
-    function getBallColor(num) {
-      if (num <= 10) return 'yellow';
-      if (num <= 20) return 'blue';
-      if (num <= 30) return 'red';
-      if (num <= 40) return 'gray';
-      return 'green';
-    }
-
-    function generateLotto() {
-      const numbers = [];
-      while (numbers.length < 6) {
-        const num = Math.floor(Math.random() * 45) + 1;
-        if (!numbers.includes(num)) {
-          numbers.push(num);
-        }
+      if (selectedCategory === 'all') {
+        Object.keys(menus).forEach(category => {
+          menus[category].forEach(menu => {
+            menuList.push({ ...menu, category });
+          });
+        });
+      } else {
+        menus[selectedCategory].forEach(menu => {
+          menuList.push({ ...menu, category: selectedCategory });
+        });
       }
-      numbers.sort((a, b) => a - b);
 
-      displayNumbers(numbers);
-      addToHistory(numbers);
+      const randomIndex = Math.floor(Math.random() * menuList.length);
+      return menuList[randomIndex];
     }
 
-    function displayNumbers(numbers) {
-      const container = document.getElementById('lottoNumbers');
-      container.innerHTML = '';
+    function recommendMenu() {
+      const display = document.getElementById('menuDisplay');
+      display.innerHTML = '<div class="menu-emoji shaking">🎰</div>';
 
-      numbers.forEach((num, index) => {
-        setTimeout(() => {
-          const ball = document.createElement('div');
-          ball.className = `ball ${getBallColor(num)}`;
-          ball.textContent = num;
-          container.appendChild(ball);
-        }, index * 100);
-      });
+      setTimeout(() => {
+        const menu = getRandomMenu();
+        displayMenu(menu);
+        addToHistory(menu);
+      }, 800);
     }
 
-    function addToHistory(numbers) {
-      history.unshift(numbers);
+    function displayMenu(menu) {
+      const display = document.getElementById('menuDisplay');
+      display.innerHTML = `
+        <div class="menu-card">
+          <div class="menu-emoji">${menu.emoji}</div>
+          <div class="menu-name">${menu.name}</div>
+          <span class="menu-category">${categoryNames[menu.category]}</span>
+        </div>
+      `;
+    }
+
+    function addToHistory(menu) {
+      history.unshift(menu);
       if (history.length > 5) history.pop();
 
       const historySection = document.getElementById('historySection');
@@ -331,18 +545,32 @@
       historySection.style.display = 'block';
       historyList.innerHTML = '';
 
-      history.forEach(nums => {
-        const item = document.createElement('div');
-        item.className = 'history-item';
-        nums.forEach(num => {
-          const ball = document.createElement('div');
-          ball.className = `mini-ball ${getBallColor(num)}`;
-          ball.textContent = num;
-          item.appendChild(ball);
-        });
-        historyList.appendChild(item);
+      history.forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+          <span class="emoji">${item.emoji}</span>
+          <span class="name">${item.name}</span>
+          <span class="category">${categoryNames[item.category]}</span>
+        `;
+        historyList.appendChild(historyItem);
       });
     }
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        themeToggle.textContent = '🌙 다크';
+        themeToggle.setAttribute('aria-pressed', 'false');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️ 라이트';
+        themeToggle.setAttribute('aria-pressed', 'true');
+      }
+    });
   </script>
 </body>
 </html>
