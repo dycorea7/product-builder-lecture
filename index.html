@@ -23,6 +23,34 @@
       --gradient: radial-gradient(circle at top left, #ffe8e2 0%, #f9f4ef 45%, #e8f6ff 100%);
       --stroke: linear-gradient(120deg, rgba(255, 107, 122, 0.9), rgba(53, 208, 186, 0.9));
       --tag-bg: rgba(255, 107, 122, 0.12);
+      --input-bg: #ffffff;
+      --orb-one: radial-gradient(circle at 30% 30%, #ffd4df, transparent 70%);
+      --orb-two: radial-gradient(circle at 60% 40%, #c7f2ea, transparent 65%);
+      --feed-card-1: linear-gradient(130deg, #ffe4e9, #e9f4ff);
+      --feed-card-2: linear-gradient(130deg, #fff1d6, #ffe6f1);
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f5f5;
+      --ink-soft: #d0d0d0;
+      --muted: #9a9a9a;
+      --accent: #ff8a97;
+      --accent-strong: #ff6b7a;
+      --mint: #4eebd3;
+      --sky: #7ab8f5;
+      --paper: #1a1a1a;
+      --card: #252525;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --outline: rgba(255, 255, 255, 0.1);
+      --gradient: radial-gradient(circle at top left, #2a1f1f 0%, #1a1a1a 45%, #1a2230 100%);
+      --stroke: linear-gradient(120deg, rgba(255, 107, 122, 0.9), rgba(53, 208, 186, 0.9));
+      --tag-bg: rgba(255, 107, 122, 0.2);
+      --input-bg: #1a1a1a;
+      --orb-one: radial-gradient(circle at 30% 30%, rgba(255, 100, 120, 0.15), transparent 70%);
+      --orb-two: radial-gradient(circle at 60% 40%, rgba(53, 208, 186, 0.15), transparent 65%);
+      --feed-card-1: linear-gradient(130deg, #2a2025, #1f2530);
+      --feed-card-2: linear-gradient(130deg, #2a2520, #2a1f25);
     }
 
     * {
@@ -56,7 +84,7 @@
     .orb.one {
       width: 200px;
       height: 200px;
-      background: radial-gradient(circle at 30% 30%, #ffd4df, transparent 70%);
+      background: var(--orb-one);
       top: 30px;
       right: 80px;
     }
@@ -64,7 +92,7 @@
     .orb.two {
       width: 240px;
       height: 240px;
-      background: radial-gradient(circle at 60% 40%, #c7f2ea, transparent 65%);
+      background: var(--orb-two);
       bottom: 40px;
       left: -40px;
     }
@@ -106,19 +134,39 @@
 
     .lang-switch button {
       border: 1px solid var(--outline);
-      background: #fff;
+      background: var(--card);
       border-radius: 999px;
       padding: 6px 14px;
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       color: var(--ink-soft);
+      transition: all 0.2s ease;
     }
 
     .lang-switch button.active {
       border-color: rgba(255, 107, 122, 0.6);
       color: var(--accent-strong);
       box-shadow: 0 8px 20px rgba(255, 107, 122, 0.2);
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--card);
+      border: 1px solid var(--outline);
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
     }
 
     .badge {
@@ -220,7 +268,7 @@
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid var(--outline);
-      background: #fff;
+      background: var(--input-bg);
       font-size: 0.95rem;
       font-family: inherit;
       color: var(--ink);
@@ -256,7 +304,7 @@
     }
 
     .ghost-btn {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--outline);
       color: var(--ink-soft);
     }
@@ -275,7 +323,7 @@
       border: 1px solid var(--outline);
       border-radius: 18px;
       padding: 18px;
-      background: #fff;
+      background: var(--card);
       position: relative;
       overflow: hidden;
       animation: rise 0.5s ease;
@@ -300,11 +348,12 @@
       top: 16px;
       right: 16px;
       border: 1px solid var(--outline);
-      background: #fff;
+      background: var(--card);
       border-radius: 999px;
       padding: 6px 12px;
       font-size: 0.75rem;
       cursor: pointer;
+      color: var(--ink-soft);
     }
 
     .tag-list {
@@ -327,8 +376,8 @@
       border-radius: 30px;
       border: 1px solid var(--outline);
       padding: 16px;
-      background: #fff;
-      box-shadow: inset 0 0 0 4px #f3f3f3;
+      background: var(--card);
+      box-shadow: inset 0 0 0 4px var(--paper);
     }
 
     .phone-header {
@@ -355,15 +404,19 @@
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      background: #f2f2f2;
-      border: 2px solid #ffd0d9;
+      background: var(--paper);
+      border: 2px solid var(--accent);
     }
 
     .feed-card {
-      background: linear-gradient(130deg, #ffe4e9, #e9f4ff);
+      background: var(--feed-card-1);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 12px;
+    }
+
+    .feed-card-alt {
+      background: var(--feed-card-2);
     }
 
     .feed-card h5 {
@@ -413,6 +466,7 @@
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
   <div class="page">
     <div class="orb one"></div>
     <div class="orb two"></div>
@@ -539,7 +593,7 @@
           <h5 id="previewHeadline">하루 종일 무너짐 없는 속광</h5>
           <p id="previewCaption">#글로우 #수분세럼 #데일리루틴</p>
         </div>
-        <div class="feed-card" style="background: linear-gradient(130deg, #fff1d6, #ffe6f1);">
+        <div class="feed-card feed-card-alt">
           <h5 id="previewCarouselTitle">5컷 캐러셀 방향</h5>
           <p id="previewCarouselDesc">1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA</p>
         </div>
@@ -1082,6 +1136,31 @@
         setLanguage(lang);
       }
     });
+
+    // 테마 토글
+    const themeToggle = document.getElementById('themeToggle');
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem('theme', theme);
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        setTheme(saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      }
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    initTheme();
 
     // 초기 프리뷰
     setLanguage('ko');
