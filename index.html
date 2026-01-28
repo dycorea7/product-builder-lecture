@@ -3,610 +3,736 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>오늘 저녁 뭐먹지?</title>
+  <title>K-뷰티 브랜드 인스타그램 콘텐츠 생성기</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
     :root {
-      color-scheme: light dark;
-      --bg-gradient: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
-      --container-bg: #ffffff;
-      --text-primary: #2b2b2b;
-      --text-muted: #666666;
-      --text-placeholder: #999999;
-      --history-bg: #f5f5f5;
-      --info-bg: #fff5f0;
-      --info-text: #555555;
-      --shadow-color: rgba(0, 0, 0, 0.3);
-      --btn-gradient: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
-      --btn-shadow: rgba(255, 107, 107, 0.4);
-      --toggle-bg: rgba(255, 255, 255, 0.7);
-      --toggle-text: #333333;
-      --toggle-border: rgba(0, 0, 0, 0.08);
-      --card-border: #ffe0d0;
+      color-scheme: light;
+      --ink: #161616;
+      --ink-soft: #3f3b3b;
+      --muted: #7a6f6a;
+      --accent: #ff6b7a;
+      --accent-strong: #ff3f5f;
+      --mint: #35d0ba;
+      --sky: #b7d9ff;
+      --paper: #f9f4ef;
+      --card: #ffffff;
+      --shadow: rgba(20, 16, 14, 0.18);
+      --outline: rgba(22, 22, 22, 0.08);
+      --gradient: radial-gradient(circle at top left, #ffe8e2 0%, #f9f4ef 45%, #e8f6ff 100%);
+      --stroke: linear-gradient(120deg, rgba(255, 107, 122, 0.9), rgba(53, 208, 186, 0.9));
+      --tag-bg: rgba(255, 107, 122, 0.12);
     }
 
-    [data-theme="dark"] {
-      --bg-gradient: radial-gradient(circle at top, #3d2a2a 0%, #1a1212 55%, #0f0a0a 100%);
-      --container-bg: #1f1818;
-      --text-primary: #f1f1f3;
-      --text-muted: #b5b7c2;
-      --text-placeholder: #8c90a3;
-      --history-bg: #2a2020;
-      --info-bg: #2a1f1f;
-      --info-text: #c6c9d6;
-      --shadow-color: rgba(0, 0, 0, 0.55);
-      --btn-gradient: linear-gradient(135deg, #ff7b4a 0%, #e85555 100%);
-      --btn-shadow: rgba(232, 85, 85, 0.4);
-      --toggle-bg: rgba(31, 24, 24, 0.8);
-      --toggle-text: #f1f1f3;
-      --toggle-border: rgba(255, 255, 255, 0.12);
-      --card-border: #3a2828;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-gradient);
+      font-family: 'Space Grotesk', 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      background: var(--gradient);
+      color: var(--ink);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      position: relative;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(0.5px);
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .orb.one {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle at 30% 30%, #ffd4df, transparent 70%);
+      top: 30px;
+      right: 80px;
+    }
+
+    .orb.two {
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle at 60% 40%, #c7f2ea, transparent 65%);
+      bottom: 40px;
+      left: -40px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
       align-items: center;
-      padding: 20px;
-      gap: 20px;
-      transition: background 0.3s ease;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 40px;
     }
 
-    .container {
-      background: var(--container-bg);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px var(--shadow-color);
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      color: var(--text-primary);
-      font-size: 1.8rem;
+    .title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      line-height: 1.1;
+      margin-bottom: 16px;
     }
 
     .subtitle {
-      color: var(--text-muted);
-      margin-bottom: 30px;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 24px;
     }
 
-    .menu-display {
-      min-height: 150px;
+    .badge-row {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 30px 0;
-    }
-
-    .menu-card {
-      background: var(--info-bg);
-      border: 2px solid var(--card-border);
-      border-radius: 16px;
-      padding: 25px 40px;
-      animation: popIn 0.4s ease-out;
-    }
-
-    .menu-emoji {
-      font-size: 4rem;
-      margin-bottom: 10px;
-    }
-
-    .menu-name {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .menu-category {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      padding: 4px 12px;
-      background: var(--history-bg);
-      border-radius: 20px;
-      display: inline-block;
-    }
-
-    @keyframes popIn {
-      0% {
-        transform: scale(0) rotate(-10deg);
-        opacity: 0;
-      }
-      70% {
-        transform: scale(1.05) rotate(2deg);
-      }
-      100% {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-      }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-10deg); }
-      75% { transform: rotate(10deg); }
-    }
-
-    .shaking {
-      animation: shake 0.1s ease-in-out infinite;
-    }
-
-    .generate-btn {
-      background: var(--btn-gradient);
-      color: white;
-      border: none;
-      padding: 15px 50px;
-      font-size: 1.1rem;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      font-weight: bold;
-    }
-
-    .generate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px var(--btn-shadow);
-    }
-
-    .generate-btn:active {
-      transform: translateY(0);
-    }
-
-    .history {
-      margin-top: 30px;
-      text-align: left;
-    }
-
-    .history h3 {
-      color: var(--text-primary);
-      margin-bottom: 15px;
-      font-size: 1rem;
-    }
-
-    .history-list {
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .history-item {
-      display: flex;
-      align-items: center;
       gap: 12px;
-      padding: 12px 15px;
-      background: var(--history-bg);
-      border-radius: 10px;
-      margin-bottom: 8px;
-      transition: background 0.3s ease;
+      flex-wrap: wrap;
     }
 
-    .history-item .emoji {
-      font-size: 1.5rem;
-    }
-
-    .history-item .name {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .history-item .category {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-left: auto;
-    }
-
-    .info {
-      margin-top: 20px;
-      padding: 15px;
-      background: var(--info-bg);
-      border-radius: 10px;
-      font-size: 0.85rem;
-      color: var(--info-text);
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .placeholder {
-      color: var(--text-placeholder);
-      font-size: 1.1rem;
-    }
-
-    .theme-toggle {
-      border: 1px solid var(--toggle-border);
-      background: var(--toggle-bg);
-      color: var(--toggle-text);
+    .badge {
+      padding: 8px 16px;
       border-radius: 999px;
-      padding: 8px 14px;
+      background: var(--card);
+      border: 1px solid var(--outline);
       font-size: 0.85rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
-      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(22, 22, 22, 0.05);
     }
 
-    .theme-toggle:hover {
-      transform: translateY(-1px);
+    .hero-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 50px var(--shadow);
+      border: 1px solid var(--outline);
     }
 
-    .category-filter {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 20px;
+    .hero-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
     }
 
-    .filter-btn {
-      padding: 8px 16px;
-      border: 2px solid var(--card-border);
-      background: var(--container-bg);
-      color: var(--text-primary);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.2s ease;
-    }
-
-    .filter-btn:hover {
-      background: var(--info-bg);
-    }
-
-    .filter-btn.active {
-      background: var(--btn-gradient);
-      color: white;
-      border-color: transparent;
-    }
-
-    .contact-form-section {
-      background: var(--container-bg);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px var(--shadow-color);
-      max-width: 500px;
-      width: 100%;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .contact-form-section h2 {
-      color: var(--text-primary);
-      margin-bottom: 10px;
-      font-size: 1.5rem;
-    }
-
-    .contact-form-section .description {
-      color: var(--text-muted);
-      margin-bottom: 20px;
+    .hero-card p {
+      color: var(--muted);
       font-size: 0.9rem;
+      margin-bottom: 18px;
     }
 
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
 
-    .form-group label {
-      display: block;
-      color: var(--text-primary);
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
+    .stat {
+      background: var(--paper);
+      border-radius: 16px;
       padding: 12px;
-      border: 2px solid var(--card-border);
-      border-radius: 10px;
-      background: var(--container-bg);
-      color: var(--text-primary);
-      font-size: 1rem;
-      transition: border-color 0.2s ease;
+      text-align: center;
+      font-size: 0.85rem;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: #ff6b6b;
+    .stat strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
     }
 
-    .form-group textarea {
-      min-height: 100px;
-      resize: vertical;
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
     }
 
-    .submit-btn {
-      background: var(--btn-gradient);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      font-size: 1rem;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.2s, box-shadow 0.2s;
+    .panel {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 18px 50px var(--shadow);
+      border: 1px solid var(--outline);
     }
 
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px var(--btn-shadow);
+    .panel h2 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
     }
 
-    #formStatusMessage {
-      margin-top: 15px;
-      color: var(--text-muted);
-    }
-
-    .comments-section {
-      background: var(--container-bg);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 20px 60px var(--shadow-color);
-      max-width: 500px;
-      width: 100%;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .comments-section h2 {
-      color: var(--text-primary);
+    .panel p {
+      color: var(--muted);
+      font-size: 0.92rem;
       margin-bottom: 20px;
-      font-size: 1.5rem;
     }
 
-    #disqus_thread {
-      color: var(--text-primary);
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--outline);
+      background: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .primary-btn,
+    .ghost-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .primary-btn {
+      background: var(--stroke);
+      color: white;
+      box-shadow: 0 12px 30px rgba(255, 63, 95, 0.25);
+    }
+
+    .ghost-btn {
+      background: #fff;
+      border: 1px solid var(--outline);
+      color: var(--ink-soft);
+    }
+
+    .primary-btn:hover,
+    .ghost-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .results {
+      display: grid;
+      gap: 16px;
+    }
+
+    .result-card {
+      border: 1px solid var(--outline);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      animation: rise 0.5s ease;
+    }
+
+    .result-card h4 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .result-card pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: inherit;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      border: 1px solid var(--outline);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .tag-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--accent-strong);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .phone {
+      border-radius: 30px;
+      border: 1px solid var(--outline);
+      padding: 16px;
+      background: #fff;
+      box-shadow: inset 0 0 0 4px #f3f3f3;
+    }
+
+    .phone-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(130deg, #ffb6c6, #b7d9ff);
+    }
+
+    .story-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .story-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: #f2f2f2;
+      border: 2px solid #ffd0d9;
+    }
+
+    .feed-card {
+      background: linear-gradient(130deg, #ffe4e9, #e9f4ff);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 12px;
+    }
+
+    .feed-card h5 {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .feed-card p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .reveal {
+      animation: fadeUp 0.6s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 960px) {
+      header {
+        grid-template-columns: 1fr;
+      }
+      main {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🍽️ 오늘 저녁 뭐먹지?</h1>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">
-        🌙 다크
-      </button>
-    </div>
-    <p class="subtitle">결정장애 탈출! 메뉴를 추천해드릴게요</p>
+  <div class="page">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
 
-    <div class="category-filter">
-      <button class="filter-btn active" data-category="all">전체</button>
-      <button class="filter-btn" data-category="korean">한식</button>
-      <button class="filter-btn" data-category="chinese">중식</button>
-      <button class="filter-btn" data-category="japanese">일식</button>
-      <button class="filter-btn" data-category="western">양식</button>
-      <button class="filter-btn" data-category="snack">분식</button>
-    </div>
-
-    <div class="menu-display" id="menuDisplay">
-      <p class="placeholder">버튼을 눌러 메뉴를 추천받으세요!</p>
-    </div>
-
-    <button class="generate-btn" onclick="recommendMenu()">메뉴 추천받기</button>
-
-    <div class="history" id="historySection" style="display: none;">
-      <h3>📋 이전 추천 메뉴</h3>
-      <div class="history-list" id="historyList"></div>
-    </div>
-
-    <div class="info">
-      💡 카테고리를 선택하면 해당 종류의 음식만 추천받을 수 있어요!
-    </div>
-  </div>
-
-  <div class="contact-form-section">
-    <h2>제휴 문의</h2>
-    <p class="description">
-      제휴 문의는 아래 양식을 통해 보내주시면 감사하겠습니다.
-      최대한 빠르게 답변 드리겠습니다.
-    </p>
-    <form id="contactForm" action="https://formspree.io/f/mnjdgdlr" method="POST">
-      <div class="form-group">
-        <label for="name">이름:</label>
-        <input type="text" id="name" name="name" required />
-      </div>
-      <div class="form-group">
-        <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required />
-      </div>
-      <div class="form-group">
-        <label for="message">메시지:</label>
-        <textarea id="message" name="message" required></textarea>
-      </div>
-      <button type="submit" class="submit-btn">보내기</button>
-      <div id="formStatusMessage"></div>
-    </form>
-  </div>
-
-  <div class="comments-section">
-    <h2>💬 댓글</h2>
-    <div id="disqus_thread"></div>
-  </div>
-
-  <script>
-    // Disqus
-    (function() {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://product-builder-9.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-  <script>
-    const menus = {
-      korean: [
-        { name: '김치찌개', emoji: '🍲' },
-        { name: '된장찌개', emoji: '🥘' },
-        { name: '삼겹살', emoji: '🥓' },
-        { name: '불고기', emoji: '🥩' },
-        { name: '비빔밥', emoji: '🍚' },
-        { name: '칼국수', emoji: '🍜' },
-        { name: '순두부찌개', emoji: '🍲' },
-        { name: '제육볶음', emoji: '🍖' },
-        { name: '갈비찜', emoji: '🍖' },
-        { name: '삼계탕', emoji: '🐔' },
-        { name: '부대찌개', emoji: '🍲' },
-        { name: '감자탕', emoji: '🍖' },
-      ],
-      chinese: [
-        { name: '짜장면', emoji: '🍝' },
-        { name: '짬뽕', emoji: '🍜' },
-        { name: '탕수육', emoji: '🍖' },
-        { name: '마파두부', emoji: '🌶️' },
-        { name: '볶음밥', emoji: '🍳' },
-        { name: '양장피', emoji: '🥗' },
-        { name: '깐풍기', emoji: '🍗' },
-        { name: '유린기', emoji: '🐔' },
-      ],
-      japanese: [
-        { name: '초밥', emoji: '🍣' },
-        { name: '라멘', emoji: '🍜' },
-        { name: '돈카츠', emoji: '🍖' },
-        { name: '우동', emoji: '🍲' },
-        { name: '카레', emoji: '🍛' },
-        { name: '규동', emoji: '🍚' },
-        { name: '오코노미야키', emoji: '🥞' },
-        { name: '타코야키', emoji: '🐙' },
-      ],
-      western: [
-        { name: '파스타', emoji: '🍝' },
-        { name: '피자', emoji: '🍕' },
-        { name: '스테이크', emoji: '🥩' },
-        { name: '햄버거', emoji: '🍔' },
-        { name: '리조또', emoji: '🍚' },
-        { name: '샐러드', emoji: '🥗' },
-        { name: '치킨', emoji: '🍗' },
-        { name: '샌드위치', emoji: '🥪' },
-      ],
-      snack: [
-        { name: '떡볶이', emoji: '🌶️' },
-        { name: '순대', emoji: '🫓' },
-        { name: '튀김', emoji: '🍤' },
-        { name: '김밥', emoji: '🍙' },
-        { name: '라면', emoji: '🍜' },
-        { name: '어묵', emoji: '🍢' },
-        { name: '핫도그', emoji: '🌭' },
-        { name: '쫄면', emoji: '🍜' },
-      ]
-    };
-
-    const categoryNames = {
-      korean: '한식',
-      chinese: '중식',
-      japanese: '일식',
-      western: '양식',
-      snack: '분식'
-    };
-
-    let selectedCategory = 'all';
-    let history = [];
-
-    // Category filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedCategory = btn.dataset.category;
-      });
-    });
-
-    function getRandomMenu() {
-      let menuList = [];
-
-      if (selectedCategory === 'all') {
-        Object.keys(menus).forEach(category => {
-          menus[category].forEach(menu => {
-            menuList.push({ ...menu, category });
-          });
-        });
-      } else {
-        menus[selectedCategory].forEach(menu => {
-          menuList.push({ ...menu, category: selectedCategory });
-        });
-      }
-
-      const randomIndex = Math.floor(Math.random() * menuList.length);
-      return menuList[randomIndex];
-    }
-
-    function recommendMenu() {
-      const display = document.getElementById('menuDisplay');
-      display.innerHTML = '<div class="menu-emoji shaking">🎰</div>';
-
-      setTimeout(() => {
-        const menu = getRandomMenu();
-        displayMenu(menu);
-        addToHistory(menu);
-      }, 800);
-    }
-
-    function displayMenu(menu) {
-      const display = document.getElementById('menuDisplay');
-      display.innerHTML = `
-        <div class="menu-card">
-          <div class="menu-emoji">${menu.emoji}</div>
-          <div class="menu-name">${menu.name}</div>
-          <span class="menu-category">${categoryNames[menu.category]}</span>
+    <header>
+      <div>
+        <div class="badge-row">
+          <span class="badge">K-뷰티 톤 & 무드</span>
+          <span class="badge">릴스 + 캐러셀</span>
+          <span class="badge">브랜드 맞춤</span>
         </div>
-      `;
+        <h1 class="title">K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기</h1>
+        <p class="subtitle">제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.</p>
+        <div class="tag-list">
+          <span class="tag">글로우</span>
+          <span class="tag">스킨케어 루틴</span>
+          <span class="tag">데일리 셀프케어</span>
+          <span class="tag">클린 뷰티</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>오늘의 콘텐츠 키포인트</h3>
+        <p>알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.</p>
+        <div class="hero-stats">
+          <div class="stat"><strong>6</strong>콘텐츠 포맷</div>
+          <div class="stat"><strong>20+</strong>해시태그</div>
+          <div class="stat"><strong>5</strong>컷 기획</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2>브랜드 정보를 입력하세요</h2>
+        <p>입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.</p>
+        <div class="form-grid">
+          <div class="field">
+            <label for="brand">브랜드명</label>
+            <input id="brand" type="text" placeholder="예: LUMIÉ, Dew&Day" />
+          </div>
+          <div class="field">
+            <label for="product">제품명</label>
+            <input id="product" type="text" placeholder="예: 글로우 세럼" />
+          </div>
+          <div class="field">
+            <label for="category">제품 카테고리</label>
+            <select id="category">
+              <option value="스킨케어">스킨케어</option>
+              <option value="메이크업">메이크업</option>
+              <option value="선케어">선케어</option>
+              <option value="바디케어">바디케어</option>
+              <option value="헤어케어">헤어케어</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="mood">톤 & 무드</label>
+            <select id="mood">
+              <option value="감각적이고 시크">감각적이고 시크</option>
+              <option value="친근하고 상큼">친근하고 상큼</option>
+              <option value="럭셔리하고 미니멀">럭셔리하고 미니멀</option>
+              <option value="클린하고 힐링">클린하고 힐링</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="audience">타깃 고객</label>
+            <input id="audience" type="text" placeholder="예: 20대 민감성 피부" />
+          </div>
+          <div class="field">
+            <label for="benefit">핵심 효능</label>
+            <input id="benefit" type="text" placeholder="예: 속광, 진정, 톤업" />
+          </div>
+          <div class="field">
+            <label for="ingredient">키 성분/텍스처</label>
+            <input id="ingredient" type="text" placeholder="예: 시카 + 수분 젤" />
+          </div>
+          <div class="field">
+            <label for="goal">캠페인 목표</label>
+            <select id="goal">
+              <option value="신제품 런칭">신제품 런칭</option>
+              <option value="재구매 유도">재구매 유도</option>
+              <option value="리뷰 확보">리뷰 확보</option>
+              <option value="브랜드 인지도">브랜드 인지도</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column: span 2;">
+            <label for="notes">브랜드 키워드 (선택)</label>
+            <textarea id="notes" placeholder="예: 비건, 피부장벽, 베이지 톤 패키지"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary-btn" id="generateBtn">콘텐츠 생성</button>
+          <button class="ghost-btn" id="randomBtn">랜덤 템플릿</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>인스타그램 결과물</h2>
+        <p>각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.</p>
+        <div class="results" id="results"></div>
+      </section>
+    </main>
+
+    <section class="panel" style="margin-top: 28px;">
+      <h2>피드 미리보기</h2>
+      <p>생성된 톤과 어울리는 비주얼 방향을 참고하세요.</p>
+      <div class="phone reveal">
+        <div class="phone-header">
+          <div class="avatar"></div>
+          <div>
+            <strong id="previewBrand">LUMIÉ</strong>
+            <div style="font-size: 0.75rem; color: var(--muted);">@lumié_glow</div>
+          </div>
+        </div>
+        <div class="story-bar">
+          <div class="story-dot"></div>
+          <div class="story-dot"></div>
+          <div class="story-dot"></div>
+        </div>
+        <div class="feed-card">
+          <h5 id="previewHeadline">하루 종일 무너짐 없는 속광</h5>
+          <p id="previewCaption">#글로우 #수분세럼 #데일리루틴</p>
+        </div>
+        <div class="feed-card" style="background: linear-gradient(130deg, #fff1d6, #ffe6f1);">
+          <h5>5컷 캐러셀 방향</h5>
+          <p>1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const fields = {
+      brand: document.getElementById('brand'),
+      product: document.getElementById('product'),
+      category: document.getElementById('category'),
+      mood: document.getElementById('mood'),
+      audience: document.getElementById('audience'),
+      benefit: document.getElementById('benefit'),
+      ingredient: document.getElementById('ingredient'),
+      goal: document.getElementById('goal'),
+      notes: document.getElementById('notes')
+    };
+
+    const hooks = [
+      '오늘 피부 컨디션, 여기서 달라져요.',
+      '속부터 차오르는 광, 단 하루 만에.',
+      '데일리 루틴에 끼우면 끝나는 변화.',
+      '피부가 편안하다고 말하는 순간.',
+      '지친 피부에 리셋 버튼을 눌러보세요.'
+    ];
+
+    const ctas = [
+      'DM으로 피부 고민을 알려주세요.',
+      '지금 스토어에서 한정 혜택을 확인해요.',
+      '저장해두고 오늘 밤 루틴에 추가하세요.',
+      '친구에게 공유하고 함께 테스트해요.',
+      '댓글로 피부 타입을 남겨주세요.'
+    ];
+
+    const textures = [
+      '가볍게 스며드는 젤 텍스처',
+      '보송하게 마무리되는 세미 매트',
+      '촉촉함이 오래가는 크림',
+      '산뜻한 워터 타입',
+      '밀착되는 세럼 핏'
+    ];
+
+    const hashtags = [
+      '#K뷰티', '#Kbeauty', '#스킨케어', '#데일리루틴', '#글로우피부', '#촉촉보습',
+      '#피부진정', '#클린뷰티', '#비건뷰티', '#민감성피부', '#세럼추천', '#토너추천',
+      '#크림추천', '#선케어', '#피부장벽', '#메이크업베이스', '#여름스킨케어',
+      '#겨울보습', '#데일리케어', '#뷰티스타그램', '#스킨케어추천', '#인스타그램마케팅'
+    ];
+
+    const carouselTemplates = [
+      '1) 피부 고민 한 줄 질문\n2) 핵심 성분 1개 클로즈업\n3) 텍스처 + 발림성\n4) 사용 전/후 or 체감 포인트\n5) 루틴 마무리 + CTA',
+      '1) 계절/상황 공감\n2) 솔루션 제시\n3) 제품 특징 3가지\n4) 사용법 3스텝\n5) 후기 요약 + 저장 유도',
+      '1) 문제 상황 이미지\n2) 제품 한 컷 + 문구\n3) 성분/기술 설명\n4) 사용 감성\n5) 이벤트/구매 안내'
+    ];
+
+    const reelsTemplates = [
+      '0-2초: 피부 고민 훅 + 자막\n2-6초: 텍스처 클로즈업\n6-10초: 사용 전/후 or 광 표현\n10-13초: 핵심 성분/효능 2줄\n13-15초: CTA + 브랜드 로고',
+      '0-3초: 계절 상황 공감\n3-7초: 제품 등장 + 사용 컷\n7-11초: 결과 포인트 2개\n11-15초: 이벤트/리뷰 요청'
+    ];
+
+    function valueOrDefault(value, fallback) {
+      return value && value.trim().length > 0 ? value.trim() : fallback;
     }
 
-    function addToHistory(menu) {
-      history.unshift(menu);
-      if (history.length > 5) history.pop();
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-      const historySection = document.getElementById('historySection');
-      const historyList = document.getElementById('historyList');
+    function generateContent() {
+      const brand = valueOrDefault(fields.brand.value, 'LUMIÉ');
+      const product = valueOrDefault(fields.product.value, '글로우 세럼');
+      const category = fields.category.value;
+      const mood = fields.mood.value;
+      const audience = valueOrDefault(fields.audience.value, '피부 컨디션이 쉽게 흔들리는 분');
+      const benefit = valueOrDefault(fields.benefit.value, '속광, 진정, 촉촉함');
+      const ingredient = valueOrDefault(fields.ingredient.value, pick(textures));
+      const goal = fields.goal.value;
+      const notes = valueOrDefault(fields.notes.value, '피부 장벽 케어');
 
-      historySection.style.display = 'block';
-      historyList.innerHTML = '';
+      const hook = pick(hooks);
+      const cta = pick(ctas);
+      const carousel = pick(carouselTemplates);
+      const reels = pick(reelsTemplates);
+      const hashList = hashtags.sort(() => 0.5 - Math.random()).slice(0, 20).join(' ');
 
-      history.forEach(item => {
-        const historyItem = document.createElement('div');
-        historyItem.className = 'history-item';
-        historyItem.innerHTML = `
-          <span class="emoji">${item.emoji}</span>
-          <span class="name">${item.name}</span>
-          <span class="category">${categoryNames[item.category]}</span>
+      const captionShort = `${hook}\n\n${brand}의 ${product}는 ${audience}을 위해 ${benefit}을 집중 케어합니다. ${ingredient}로 마무리는 가볍고, 피부는 편안하게.\n\n${goal}에 맞춰 지금 이 분위기로 가보세요. ${cta}`;
+
+      const captionLong = `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit} 집중 케어\n- ${ingredient}\n- ${notes}\n\n사용 후 피부가 느끼는 변화는 더 단순합니다: 편안함, 탄탄함, 그리고 자연스러운 광.\n\n오늘은 ${mood} 톤으로 풀어냈어요. ${goal} 캠페인에 어울리는 비주얼로 세팅해보세요.\n\n${cta}`;
+
+      const story = `프레임 1: 공감 질문 + 고민 키워드\n프레임 2: ${product} 텍스처/성분 컷\n프레임 3: 사용 결과 + 스와이프 CTA`;
+
+      const shotList = `컷1: 제품 단독 + 클린 배경\n컷2: 텍스처 클로즈업\n컷3: 사용 중 손/피부 컷\n컷4: 전/후 느낌 비교\n컷5: 패키지 + 브랜드 로고`;
+
+      const altText = `${brand}의 ${product} 제품 클로즈업. ${ingredient} 텍스처가 보이고, ${mood} 톤의 배경에서 ${benefit} 메시지를 전달합니다.`;
+
+      return {
+        brand,
+        headline: `${product}로 완성하는 ${mood} 루틴`,
+        captionShort,
+        captionLong,
+        carousel,
+        reels,
+        story,
+        shotList,
+        hashtags: hashList,
+        altText
+      };
+    }
+
+    function renderResults(content) {
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+
+      const cards = [
+        { title: '캡션 (짧은 버전)', value: content.captionShort },
+        { title: '캡션 (스토리텔링 버전)', value: content.captionLong },
+        { title: '캐러셀 구성안', value: content.carousel },
+        { title: '릴스 15초 스크립트', value: content.reels },
+        { title: '스토리 3프레임', value: content.story },
+        { title: '촬영 컷 리스트', value: content.shotList },
+        { title: '해시태그 세트', value: content.hashtags },
+        { title: '대체 텍스트(ALT)', value: content.altText }
+      ];
+
+      cards.forEach((card, index) => {
+        const el = document.createElement('div');
+        el.className = 'result-card';
+        el.style.animationDelay = `${index * 0.05}s`;
+        el.innerHTML = `
+          <button class="copy-btn" type="button">복사</button>
+          <h4>${card.title}</h4>
+          <pre>${card.value}</pre>
         `;
-        historyList.appendChild(historyItem);
+
+        el.querySelector('.copy-btn').addEventListener('click', () => {
+          copyText(card.value, el);
+        });
+
+        results.appendChild(el);
       });
     }
 
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        themeToggle.textContent = '🌙 다크';
-        themeToggle.setAttribute('aria-pressed', 'false');
+    function copyText(text, card) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showCopied(card);
+        });
       } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeToggle.textContent = '☀️ 라이트';
-        themeToggle.setAttribute('aria-pressed', 'true');
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showCopied(card);
       }
+    }
+
+    function showCopied(card) {
+      const btn = card.querySelector('.copy-btn');
+      const original = btn.textContent;
+      btn.textContent = '복사됨';
+      setTimeout(() => {
+        btn.textContent = original;
+      }, 1200);
+    }
+
+    function randomize() {
+      const presets = [
+        {
+          brand: 'LUMIÉ',
+          product: '글로우 세럼',
+          audience: '피부가 쉽게 건조해지는 20대',
+          benefit: '속광 + 수분 충전',
+          ingredient: '히알루론 + 마이크로 캡슐',
+          notes: '비건, 파스텔 톤 패키지'
+        },
+        {
+          brand: 'Dew&Day',
+          product: '카밍 토너 패드',
+          audience: '마스크 자극이 있는 민감 피부',
+          benefit: '진정 + 열감 완화',
+          ingredient: '시카 + 판테놀',
+          notes: '클린 뷰티, 무향'
+        },
+        {
+          brand: 'Studio Beige',
+          product: '블러 틴트',
+          audience: '데일리 메이크업을 즐기는 2030',
+          benefit: '보송함 + 생기',
+          ingredient: '벨벳 피니시',
+          notes: '누드 컬러, 미니멀 패키지'
+        }
+      ];
+
+      const preset = pick(presets);
+      fields.brand.value = preset.brand;
+      fields.product.value = preset.product;
+      fields.audience.value = preset.audience;
+      fields.benefit.value = preset.benefit;
+      fields.ingredient.value = preset.ingredient;
+      fields.notes.value = preset.notes;
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      const content = generateContent();
+      renderResults(content);
+      document.getElementById('previewBrand').textContent = content.brand;
+      document.getElementById('previewHeadline').textContent = content.headline;
+      document.getElementById('previewCaption').textContent = content.hashtags.split(' ').slice(0, 3).join(' ');
     });
+
+    document.getElementById('randomBtn').addEventListener('click', () => {
+      randomize();
+    });
+
+    // 초기 프리뷰
+    renderResults(generateContent());
   </script>
 </body>
 </html>
