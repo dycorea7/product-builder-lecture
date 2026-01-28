@@ -98,6 +98,29 @@
       flex-wrap: wrap;
     }
 
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .lang-switch button {
+      border: 1px solid var(--outline);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+
+    .lang-switch button.active {
+      border-color: rgba(255, 107, 122, 0.6);
+      color: var(--accent-strong);
+      box-shadow: 0 8px 20px rgba(255, 107, 122, 0.2);
+    }
+
     .badge {
       padding: 8px 16px;
       border-radius: 999px;
@@ -396,14 +419,18 @@
 
     <header>
       <div>
-        <div class="badge-row">
+        <div class="lang-switch" id="langSwitch">
+          <button type="button" data-lang="ko" class="active">한국어</button>
+          <button type="button" data-lang="en">English</button>
+        </div>
+        <div class="badge-row" id="badgeRow">
           <span class="badge">K-뷰티 톤 & 무드</span>
           <span class="badge">릴스 + 캐러셀</span>
           <span class="badge">브랜드 맞춤</span>
         </div>
-        <h1 class="title">K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기</h1>
-        <p class="subtitle">제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.</p>
-        <div class="tag-list">
+        <h1 class="title" id="pageTitle">K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기</h1>
+        <p class="subtitle" id="pageSubtitle">제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.</p>
+        <div class="tag-list" id="tagList">
           <span class="tag">글로우</span>
           <span class="tag">스킨케어 루틴</span>
           <span class="tag">데일리 셀프케어</span>
@@ -411,31 +438,31 @@
         </div>
       </div>
       <div class="hero-card">
-        <h3>오늘의 콘텐츠 키포인트</h3>
-        <p>알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.</p>
+        <h3 id="heroTitle">오늘의 콘텐츠 키포인트</h3>
+        <p id="heroDesc">알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.</p>
         <div class="hero-stats">
-          <div class="stat"><strong>6</strong>콘텐츠 포맷</div>
-          <div class="stat"><strong>20+</strong>해시태그</div>
-          <div class="stat"><strong>5</strong>컷 기획</div>
+          <div class="stat"><strong>6</strong><span id="statLabel1">콘텐츠 포맷</span></div>
+          <div class="stat"><strong>20+</strong><span id="statLabel2">해시태그</span></div>
+          <div class="stat"><strong>5</strong><span id="statLabel3">컷 기획</span></div>
         </div>
       </div>
     </header>
 
     <main>
       <section class="panel">
-        <h2>브랜드 정보를 입력하세요</h2>
-        <p>입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.</p>
+        <h2 id="formTitle">브랜드 정보를 입력하세요</h2>
+        <p id="formDesc">입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.</p>
         <div class="form-grid">
           <div class="field">
-            <label for="brand">브랜드명</label>
+            <label for="brand" id="labelBrand">브랜드명</label>
             <input id="brand" type="text" placeholder="예: LUMIÉ, Dew&Day" />
           </div>
           <div class="field">
-            <label for="product">제품명</label>
+            <label for="product" id="labelProduct">제품명</label>
             <input id="product" type="text" placeholder="예: 글로우 세럼" />
           </div>
           <div class="field">
-            <label for="category">제품 카테고리</label>
+            <label for="category" id="labelCategory">제품 카테고리</label>
             <select id="category">
               <option value="스킨케어">스킨케어</option>
               <option value="메이크업">메이크업</option>
@@ -445,7 +472,7 @@
             </select>
           </div>
           <div class="field">
-            <label for="mood">톤 & 무드</label>
+            <label for="mood" id="labelMood">톤 & 무드</label>
             <select id="mood">
               <option value="감각적이고 시크">감각적이고 시크</option>
               <option value="친근하고 상큼">친근하고 상큼</option>
@@ -454,19 +481,19 @@
             </select>
           </div>
           <div class="field">
-            <label for="audience">타깃 고객</label>
+            <label for="audience" id="labelAudience">타깃 고객</label>
             <input id="audience" type="text" placeholder="예: 20대 민감성 피부" />
           </div>
           <div class="field">
-            <label for="benefit">핵심 효능</label>
+            <label for="benefit" id="labelBenefit">핵심 효능</label>
             <input id="benefit" type="text" placeholder="예: 속광, 진정, 톤업" />
           </div>
           <div class="field">
-            <label for="ingredient">키 성분/텍스처</label>
+            <label for="ingredient" id="labelIngredient">키 성분/텍스처</label>
             <input id="ingredient" type="text" placeholder="예: 시카 + 수분 젤" />
           </div>
           <div class="field">
-            <label for="goal">캠페인 목표</label>
+            <label for="goal" id="labelGoal">캠페인 목표</label>
             <select id="goal">
               <option value="신제품 런칭">신제품 런칭</option>
               <option value="재구매 유도">재구매 유도</option>
@@ -475,7 +502,7 @@
             </select>
           </div>
           <div class="field" style="grid-column: span 2;">
-            <label for="notes">브랜드 키워드 (선택)</label>
+            <label for="notes" id="labelNotes">브랜드 키워드 (선택)</label>
             <textarea id="notes" placeholder="예: 비건, 피부장벽, 베이지 톤 패키지"></textarea>
           </div>
         </div>
@@ -486,15 +513,15 @@
       </section>
 
       <section class="panel">
-        <h2>인스타그램 결과물</h2>
-        <p>각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.</p>
+        <h2 id="resultsTitle">인스타그램 결과물</h2>
+        <p id="resultsDesc">각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.</p>
         <div class="results" id="results"></div>
       </section>
     </main>
 
     <section class="panel" style="margin-top: 28px;">
-      <h2>피드 미리보기</h2>
-      <p>생성된 톤과 어울리는 비주얼 방향을 참고하세요.</p>
+      <h2 id="previewTitle">피드 미리보기</h2>
+      <p id="previewDesc">생성된 톤과 어울리는 비주얼 방향을 참고하세요.</p>
       <div class="phone reveal">
         <div class="phone-header">
           <div class="avatar"></div>
@@ -513,8 +540,8 @@
           <p id="previewCaption">#글로우 #수분세럼 #데일리루틴</p>
         </div>
         <div class="feed-card" style="background: linear-gradient(130deg, #fff1d6, #ffe6f1);">
-          <h5>5컷 캐러셀 방향</h5>
-          <p>1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA</p>
+          <h5 id="previewCarouselTitle">5컷 캐러셀 방향</h5>
+          <p id="previewCarouselDesc">1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA</p>
         </div>
       </div>
     </section>
@@ -533,47 +560,228 @@
       notes: document.getElementById('notes')
     };
 
-    const hooks = [
-      '오늘 피부 컨디션, 여기서 달라져요.',
-      '속부터 차오르는 광, 단 하루 만에.',
-      '데일리 루틴에 끼우면 끝나는 변화.',
-      '피부가 편안하다고 말하는 순간.',
-      '지친 피부에 리셋 버튼을 눌러보세요.'
-    ];
+    const i18n = {
+      ko: {
+        ui: {
+          pageTitle: 'K-뷰티 브랜드 인스타그램 콘텐츠 생성기',
+          badgeList: ['K-뷰티 톤 & 무드', '릴스 + 캐러셀', '브랜드 맞춤'],
+          titleHtml: 'K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기',
+          subtitle: '제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.',
+          tagList: ['글로우', '스킨케어 루틴', '데일리 셀프케어', '클린 뷰티'],
+          heroTitle: '오늘의 콘텐츠 키포인트',
+          heroDesc: '알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.',
+          statLabels: ['콘텐츠 포맷', '해시태그', '컷 기획'],
+          formTitle: '브랜드 정보를 입력하세요',
+          formDesc: '입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.',
+          labels: {
+            brand: '브랜드명',
+            product: '제품명',
+            category: '제품 카테고리',
+            mood: '톤 & 무드',
+            audience: '타깃 고객',
+            benefit: '핵심 효능',
+            ingredient: '키 성분/텍스처',
+            goal: '캠페인 목표',
+            notes: '브랜드 키워드 (선택)'
+          },
+          placeholders: {
+            brand: '예: LUMIÉ, Dew&Day',
+            product: '예: 글로우 세럼',
+            audience: '예: 20대 민감성 피부',
+            benefit: '예: 속광, 진정, 톤업',
+            ingredient: '예: 시카 + 수분 젤',
+            notes: '예: 비건, 피부장벽, 베이지 톤 패키지'
+          },
+          buttons: {
+            generate: '콘텐츠 생성',
+            random: '랜덤 템플릿'
+          },
+          resultsTitle: '인스타그램 결과물',
+          resultsDesc: '각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.',
+          previewTitle: '피드 미리보기',
+          previewDesc: '생성된 톤과 어울리는 비주얼 방향을 참고하세요.',
+          previewCarouselTitle: '5컷 캐러셀 방향',
+          previewCarouselDesc: '1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA',
+          copy: '복사',
+          copied: '복사됨',
+          cardTitles: [
+            '캡션 (짧은 버전)',
+            '캡션 (스토리텔링 버전)',
+            '캐러셀 구성안',
+            '릴스 15초 스크립트',
+            '스토리 3프레임',
+            '촬영 컷 리스트',
+            '해시태그 세트',
+            '대체 텍스트(ALT)'
+          ]
+        },
+        options: {
+          category: ['스킨케어', '메이크업', '선케어', '바디케어', '헤어케어'],
+          mood: ['감각적이고 시크', '친근하고 상큼', '럭셔리하고 미니멀', '클린하고 힐링'],
+          goal: ['신제품 런칭', '재구매 유도', '리뷰 확보', '브랜드 인지도']
+        },
+        templates: {
+          hooks: [
+            '오늘 피부 컨디션, 여기서 달라져요.',
+            '속부터 차오르는 광, 단 하루 만에.',
+            '데일리 루틴에 끼우면 끝나는 변화.',
+            '피부가 편안하다고 말하는 순간.',
+            '지친 피부에 리셋 버튼을 눌러보세요.'
+          ],
+          ctas: [
+            'DM으로 피부 고민을 알려주세요.',
+            '지금 스토어에서 한정 혜택을 확인해요.',
+            '저장해두고 오늘 밤 루틴에 추가하세요.',
+            '친구에게 공유하고 함께 테스트해요.',
+            '댓글로 피부 타입을 남겨주세요.'
+          ],
+          textures: [
+            '가볍게 스며드는 젤 텍스처',
+            '보송하게 마무리되는 세미 매트',
+            '촉촉함이 오래가는 크림',
+            '산뜻한 워터 타입',
+            '밀착되는 세럼 핏'
+          ],
+          hashtags: [
+            '#K뷰티', '#Kbeauty', '#스킨케어', '#데일리루틴', '#글로우피부', '#촉촉보습',
+            '#피부진정', '#클린뷰티', '#비건뷰티', '#민감성피부', '#세럼추천', '#토너추천',
+            '#크림추천', '#선케어', '#피부장벽', '#메이크업베이스', '#여름스킨케어',
+            '#겨울보습', '#데일리케어', '#뷰티스타그램', '#스킨케어추천', '#인스타그램마케팅'
+          ],
+          carouselTemplates: [
+            '1) 피부 고민 한 줄 질문\n2) 핵심 성분 1개 클로즈업\n3) 텍스처 + 발림성\n4) 사용 전/후 or 체감 포인트\n5) 루틴 마무리 + CTA',
+            '1) 계절/상황 공감\n2) 솔루션 제시\n3) 제품 특징 3가지\n4) 사용법 3스텝\n5) 후기 요약 + 저장 유도',
+            '1) 문제 상황 이미지\n2) 제품 한 컷 + 문구\n3) 성분/기술 설명\n4) 사용 감성\n5) 이벤트/구매 안내'
+          ],
+          reelsTemplates: [
+            '0-2초: 피부 고민 훅 + 자막\n2-6초: 텍스처 클로즈업\n6-10초: 사용 전/후 or 광 표현\n10-13초: 핵심 성분/효능 2줄\n13-15초: CTA + 브랜드 로고',
+            '0-3초: 계절 상황 공감\n3-7초: 제품 등장 + 사용 컷\n7-11초: 결과 포인트 2개\n11-15초: 이벤트/리뷰 요청'
+          ],
+          captionShort: ({ hook, brand, product, audience, benefit, ingredient, goal, cta }) =>
+            `${hook}\n\n${brand}의 ${product}는 ${audience}을 위해 ${benefit}을 집중 케어합니다. ${ingredient}로 마무리는 가볍고, 피부는 편안하게.\n\n${goal}에 맞춰 지금 이 분위기로 가보세요. ${cta}`,
+          captionLong: ({ hook, brand, product, category, benefit, ingredient, notes, mood, goal, cta }) =>
+            `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit} 집중 케어\n- ${ingredient}\n- ${notes}\n\n사용 후 피부가 느끼는 변화는 더 단순합니다: 편안함, 탄탄함, 그리고 자연스러운 광.\n\n오늘은 ${mood} 톤으로 풀어냈어요. ${goal} 캠페인에 어울리는 비주얼로 세팅해보세요.\n\n${cta}`,
+          story: ({ product }) =>
+            `프레임 1: 공감 질문 + 고민 키워드\n프레임 2: ${product} 텍스처/성분 컷\n프레임 3: 사용 결과 + 스와이프 CTA`,
+          shotList: () =>
+            `컷1: 제품 단독 + 클린 배경\n컷2: 텍스처 클로즈업\n컷3: 사용 중 손/피부 컷\n컷4: 전/후 느낌 비교\n컷5: 패키지 + 브랜드 로고`,
+          altText: ({ brand, product, ingredient, mood, benefit }) =>
+            `${brand}의 ${product} 제품 클로즈업. ${ingredient} 텍스처가 보이고, ${mood} 톤의 배경에서 ${benefit} 메시지를 전달합니다.`,
+          previewHeadline: '하루 종일 무너짐 없는 속광'
+        }
+      },
+      en: {
+        ui: {
+          pageTitle: 'K-Beauty Instagram Content Generator',
+          badgeList: ['K-beauty tone & mood', 'Reels + carousel', 'Brand-tailored'],
+          titleHtml: 'K-Beauty Brand<br />Instagram Content Generator',
+          subtitle: 'Create ready-to-post captions, stories, and Reels scripts from a single product line.',
+          tagList: ['Glow', 'Skincare routine', 'Daily self-care', 'Clean beauty'],
+          heroTitle: 'Today\'s Content Key Points',
+          heroDesc: 'Algorithm-friendly structure + brand story + conversion CTA in one flow.',
+          statLabels: ['Content formats', 'Hashtags', 'Shot plan'],
+          formTitle: 'Enter brand details',
+          formDesc: 'The tone adapts automatically. Leave fields empty to use defaults.',
+          labels: {
+            brand: 'Brand name',
+            product: 'Product name',
+            category: 'Category',
+            mood: 'Tone & mood',
+            audience: 'Target audience',
+            benefit: 'Key benefits',
+            ingredient: 'Key ingredient/texture',
+            goal: 'Campaign goal',
+            notes: 'Brand keywords (optional)'
+          },
+          placeholders: {
+            brand: 'e.g., LUMIÉ, Dew&Day',
+            product: 'e.g., Glow Serum',
+            audience: 'e.g., Sensitive skin in 20s',
+            benefit: 'e.g., glow, calming, brightening',
+            ingredient: 'e.g., cica + aqua gel',
+            notes: 'e.g., vegan, skin barrier, beige packaging'
+          },
+          buttons: {
+            generate: 'Generate content',
+            random: 'Random template'
+          },
+          resultsTitle: 'Instagram outputs',
+          resultsDesc: 'Use the copy button on each card to paste directly.',
+          previewTitle: 'Feed preview',
+          previewDesc: 'Use this as a visual direction aligned with the generated tone.',
+          previewCarouselTitle: '5-frame carousel flow',
+          previewCarouselDesc: '1. Problem → 2. Ingredient close-up → 3. Texture → 4. Before/after → 5. CTA',
+          copy: 'Copy',
+          copied: 'Copied',
+          cardTitles: [
+            'Caption (short)',
+            'Caption (storytelling)',
+            'Carousel outline',
+            '15s Reels script',
+            'Story (3 frames)',
+            'Shot list',
+            'Hashtag set',
+            'Alt text'
+          ]
+        },
+        options: {
+          category: ['Skincare', 'Makeup', 'Suncare', 'Bodycare', 'Haircare'],
+          mood: ['Sensory & chic', 'Friendly & fresh', 'Luxury & minimal', 'Clean & calming'],
+          goal: ['New launch', 'Repeat purchase', 'Collect reviews', 'Brand awareness']
+        },
+        templates: {
+          hooks: [
+            'Your skin shifts right here, right now.',
+            'Glow that builds from within in just one day.',
+            'A small swap that changes your whole routine.',
+            'The moment your skin feels truly at ease.',
+            'Tap reset for tired skin.'
+          ],
+          ctas: [
+            'DM us your skin concerns.',
+            'Check today\'s limited offer in the store.',
+            'Save this and add it to tonight\'s routine.',
+            'Share with a friend and test together.',
+            'Drop your skin type in the comments.'
+          ],
+          textures: [
+            'a lightweight gel texture',
+            'a soft semi-matte finish',
+            'a long-lasting creamy moisture',
+            'a fresh watery type',
+            'a serum-fit texture that hugs the skin'
+          ],
+          hashtags: [
+            '#Kbeauty', '#skincare', '#dailyglow', '#glowingskin', '#moisturizing', '#calmingskin',
+            '#cleanbeauty', '#veganbeauty', '#sensitiveskin', '#serum', '#toner', '#cream',
+            '#suncare', '#skinbarrier', '#makeupbase', '#summerbeauty', '#wintercare', '#selfcare',
+            '#beautygram', '#skincareroutine', '#instagrammarketing', '#beautycontent'
+          ],
+          carouselTemplates: [
+            '1) One-line skin concern\n2) Hero ingredient close-up\n3) Texture + spread\n4) Before/after or feel\n5) Routine finish + CTA',
+            '1) Seasonal empathy\n2) Solution reveal\n3) 3 product highlights\n4) 3-step usage\n5) Review summary + save prompt',
+            '1) Problem visual\n2) Product shot + line\n3) Ingredient/tech story\n4) Sensory usage\n5) Event/purchase info'
+          ],
+          reelsTemplates: [
+            '0-2s: Skin concern hook + caption\n2-6s: Texture close-up\n6-10s: Before/after or glow\n10-13s: 2 benefit lines\n13-15s: CTA + logo',
+            '0-3s: Seasonal pain point\n3-7s: Product reveal + usage\n7-11s: 2 result points\n11-15s: Event/review ask'
+          ],
+          captionShort: ({ hook, brand, product, audience, benefit, ingredient, goal, cta }) =>
+            `${hook}\n\n${brand}\'s ${product} is designed for ${audience}, focusing on ${benefit}. Finished with ${ingredient} so it feels light yet calming.\n\nMatch the mood for your ${goal}. ${cta}`,
+          captionLong: ({ hook, brand, product, category, benefit, ingredient, notes, mood, goal, cta }) =>
+            `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit}\n- ${ingredient}\n- ${notes}\n\nThe post-application feel is simple: comfort, firmness, and a natural glow.\n\nToday we styled it in a ${mood} tone. Build visuals that align with your ${goal}.\n\n${cta}`,
+          story: ({ product }) =>
+            `Frame 1: Relatable question + pain keyword\nFrame 2: ${product} texture/ingredient shot\nFrame 3: Result + swipe CTA`,
+          shotList: () =>
+            `Shot 1: Product hero + clean background\nShot 2: Texture close-up\nShot 3: In-use hands/skin\nShot 4: Before/after feel\nShot 5: Packaging + logo`,
+          altText: ({ brand, product, ingredient, mood, benefit }) =>
+            `Close-up of ${brand} ${product}. The ${ingredient} texture appears against a ${mood} background with messaging about ${benefit}.`,
+          previewHeadline: 'All-day glow that doesn\'t fade'
+        }
+      }
+    };
 
-    const ctas = [
-      'DM으로 피부 고민을 알려주세요.',
-      '지금 스토어에서 한정 혜택을 확인해요.',
-      '저장해두고 오늘 밤 루틴에 추가하세요.',
-      '친구에게 공유하고 함께 테스트해요.',
-      '댓글로 피부 타입을 남겨주세요.'
-    ];
-
-    const textures = [
-      '가볍게 스며드는 젤 텍스처',
-      '보송하게 마무리되는 세미 매트',
-      '촉촉함이 오래가는 크림',
-      '산뜻한 워터 타입',
-      '밀착되는 세럼 핏'
-    ];
-
-    const hashtags = [
-      '#K뷰티', '#Kbeauty', '#스킨케어', '#데일리루틴', '#글로우피부', '#촉촉보습',
-      '#피부진정', '#클린뷰티', '#비건뷰티', '#민감성피부', '#세럼추천', '#토너추천',
-      '#크림추천', '#선케어', '#피부장벽', '#메이크업베이스', '#여름스킨케어',
-      '#겨울보습', '#데일리케어', '#뷰티스타그램', '#스킨케어추천', '#인스타그램마케팅'
-    ];
-
-    const carouselTemplates = [
-      '1) 피부 고민 한 줄 질문\n2) 핵심 성분 1개 클로즈업\n3) 텍스처 + 발림성\n4) 사용 전/후 or 체감 포인트\n5) 루틴 마무리 + CTA',
-      '1) 계절/상황 공감\n2) 솔루션 제시\n3) 제품 특징 3가지\n4) 사용법 3스텝\n5) 후기 요약 + 저장 유도',
-      '1) 문제 상황 이미지\n2) 제품 한 컷 + 문구\n3) 성분/기술 설명\n4) 사용 감성\n5) 이벤트/구매 안내'
-    ];
-
-    const reelsTemplates = [
-      '0-2초: 피부 고민 훅 + 자막\n2-6초: 텍스처 클로즈업\n6-10초: 사용 전/후 or 광 표현\n10-13초: 핵심 성분/효능 2줄\n13-15초: CTA + 브랜드 로고',
-      '0-3초: 계절 상황 공감\n3-7초: 제품 등장 + 사용 컷\n7-11초: 결과 포인트 2개\n11-15초: 이벤트/리뷰 요청'
-    ];
+    let currentLang = 'ko';
 
     function valueOrDefault(value, fallback) {
       return value && value.trim().length > 0 ? value.trim() : fallback;
@@ -584,35 +792,70 @@
     }
 
     function generateContent() {
-      const brand = valueOrDefault(fields.brand.value, 'LUMIÉ');
-      const product = valueOrDefault(fields.product.value, '글로우 세럼');
+      const pack = i18n[currentLang];
+      const defaults = currentLang === 'ko'
+        ? {
+            brand: 'LUMIÉ',
+            product: '글로우 세럼',
+            audience: '피부 컨디션이 쉽게 흔들리는 분',
+            benefit: '속광, 진정, 촉촉함',
+            notes: '피부 장벽 케어'
+          }
+        : {
+            brand: 'LUMIÉ',
+            product: 'Glow Serum',
+            audience: 'sensitive skin in their 20s',
+            benefit: 'glow, calming, hydration',
+            notes: 'skin barrier care'
+          };
+
+      const brand = valueOrDefault(fields.brand.value, defaults.brand);
+      const product = valueOrDefault(fields.product.value, defaults.product);
       const category = fields.category.value;
       const mood = fields.mood.value;
-      const audience = valueOrDefault(fields.audience.value, '피부 컨디션이 쉽게 흔들리는 분');
-      const benefit = valueOrDefault(fields.benefit.value, '속광, 진정, 촉촉함');
-      const ingredient = valueOrDefault(fields.ingredient.value, pick(textures));
+      const audience = valueOrDefault(fields.audience.value, defaults.audience);
+      const benefit = valueOrDefault(fields.benefit.value, defaults.benefit);
+      const ingredient = valueOrDefault(fields.ingredient.value, pick(pack.templates.textures));
       const goal = fields.goal.value;
-      const notes = valueOrDefault(fields.notes.value, '피부 장벽 케어');
+      const notes = valueOrDefault(fields.notes.value, defaults.notes);
 
-      const hook = pick(hooks);
-      const cta = pick(ctas);
-      const carousel = pick(carouselTemplates);
-      const reels = pick(reelsTemplates);
-      const hashList = hashtags.sort(() => 0.5 - Math.random()).slice(0, 20).join(' ');
+      const hook = pick(pack.templates.hooks);
+      const cta = pick(pack.templates.ctas);
+      const carousel = pick(pack.templates.carouselTemplates);
+      const reels = pick(pack.templates.reelsTemplates);
+      const hashList = pack.templates.hashtags.sort(() => 0.5 - Math.random()).slice(0, 20).join(' ');
 
-      const captionShort = `${hook}\n\n${brand}의 ${product}는 ${audience}을 위해 ${benefit}을 집중 케어합니다. ${ingredient}로 마무리는 가볍고, 피부는 편안하게.\n\n${goal}에 맞춰 지금 이 분위기로 가보세요. ${cta}`;
+      const captionShort = pack.templates.captionShort({
+        hook,
+        brand,
+        product,
+        audience,
+        benefit,
+        ingredient,
+        goal,
+        cta
+      });
 
-      const captionLong = `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit} 집중 케어\n- ${ingredient}\n- ${notes}\n\n사용 후 피부가 느끼는 변화는 더 단순합니다: 편안함, 탄탄함, 그리고 자연스러운 광.\n\n오늘은 ${mood} 톤으로 풀어냈어요. ${goal} 캠페인에 어울리는 비주얼로 세팅해보세요.\n\n${cta}`;
+      const captionLong = pack.templates.captionLong({
+        hook,
+        brand,
+        product,
+        category,
+        benefit,
+        ingredient,
+        notes,
+        mood,
+        goal,
+        cta
+      });
 
-      const story = `프레임 1: 공감 질문 + 고민 키워드\n프레임 2: ${product} 텍스처/성분 컷\n프레임 3: 사용 결과 + 스와이프 CTA`;
-
-      const shotList = `컷1: 제품 단독 + 클린 배경\n컷2: 텍스처 클로즈업\n컷3: 사용 중 손/피부 컷\n컷4: 전/후 느낌 비교\n컷5: 패키지 + 브랜드 로고`;
-
-      const altText = `${brand}의 ${product} 제품 클로즈업. ${ingredient} 텍스처가 보이고, ${mood} 톤의 배경에서 ${benefit} 메시지를 전달합니다.`;
+      const story = pack.templates.story({ product });
+      const shotList = pack.templates.shotList();
+      const altText = pack.templates.altText({ brand, product, ingredient, mood, benefit });
 
       return {
         brand,
-        headline: `${product}로 완성하는 ${mood} 루틴`,
+        headline: currentLang === 'ko' ? `${product}로 완성하는 ${mood} 루틴` : `${mood} routine with ${product}`,
         captionShort,
         captionLong,
         carousel,
@@ -628,23 +871,26 @@
       const results = document.getElementById('results');
       results.innerHTML = '';
 
-      const cards = [
-        { title: '캡션 (짧은 버전)', value: content.captionShort },
-        { title: '캡션 (스토리텔링 버전)', value: content.captionLong },
-        { title: '캐러셀 구성안', value: content.carousel },
-        { title: '릴스 15초 스크립트', value: content.reels },
-        { title: '스토리 3프레임', value: content.story },
-        { title: '촬영 컷 리스트', value: content.shotList },
-        { title: '해시태그 세트', value: content.hashtags },
-        { title: '대체 텍스트(ALT)', value: content.altText }
-      ];
+      const cards = i18n[currentLang].ui.cardTitles.map((title, index) => {
+        const values = [
+          content.captionShort,
+          content.captionLong,
+          content.carousel,
+          content.reels,
+          content.story,
+          content.shotList,
+          content.hashtags,
+          content.altText
+        ];
+        return { title, value: values[index] };
+      });
 
       cards.forEach((card, index) => {
         const el = document.createElement('div');
         el.className = 'result-card';
         el.style.animationDelay = `${index * 0.05}s`;
         el.innerHTML = `
-          <button class="copy-btn" type="button">복사</button>
+          <button class="copy-btn" type="button">${i18n[currentLang].ui.copy}</button>
           <h4>${card.title}</h4>
           <pre>${card.value}</pre>
         `;
@@ -676,14 +922,14 @@
     function showCopied(card) {
       const btn = card.querySelector('.copy-btn');
       const original = btn.textContent;
-      btn.textContent = '복사됨';
+      btn.textContent = i18n[currentLang].ui.copied;
       setTimeout(() => {
         btn.textContent = original;
       }, 1200);
     }
 
     function randomize() {
-      const presets = [
+      const presets = currentLang === 'ko' ? [
         {
           brand: 'LUMIÉ',
           product: '글로우 세럼',
@@ -708,6 +954,31 @@
           ingredient: '벨벳 피니시',
           notes: '누드 컬러, 미니멀 패키지'
         }
+      ] : [
+        {
+          brand: 'LUMIÉ',
+          product: 'Glow Serum',
+          audience: 'Dry, easily dehydrated skin in 20s',
+          benefit: 'Glow + hydration boost',
+          ingredient: 'Hyaluronic acid + micro capsules',
+          notes: 'Vegan, pastel packaging'
+        },
+        {
+          brand: 'Dew&Day',
+          product: 'Calming Toner Pads',
+          audience: 'Sensitive skin with mask irritation',
+          benefit: 'Soothing + cooling',
+          ingredient: 'Cica + panthenol',
+          notes: 'Clean beauty, fragrance-free'
+        },
+        {
+          brand: 'Studio Beige',
+          product: 'Blur Tint',
+          audience: '2030s who love daily makeup',
+          benefit: 'Soft-matte + vitality',
+          ingredient: 'Velvet finish',
+          notes: 'Nude tones, minimal packaging'
+        }
       ];
 
       const preset = pick(presets);
@@ -731,8 +1002,89 @@
       randomize();
     });
 
+    function setLanguage(lang) {
+      currentLang = lang;
+      const pack = i18n[currentLang];
+
+      document.documentElement.lang = currentLang;
+      document.title = pack.ui.pageTitle;
+
+      const badgeRow = document.getElementById('badgeRow');
+      badgeRow.innerHTML = pack.ui.badgeList.map((text) => `<span class="badge">${text}</span>`).join('');
+
+      document.getElementById('pageTitle').innerHTML = pack.ui.titleHtml;
+      document.getElementById('pageSubtitle').textContent = pack.ui.subtitle;
+
+      const tagList = document.getElementById('tagList');
+      tagList.innerHTML = pack.ui.tagList.map((text) => `<span class="tag">${text}</span>`).join('');
+
+      document.getElementById('heroTitle').textContent = pack.ui.heroTitle;
+      document.getElementById('heroDesc').textContent = pack.ui.heroDesc;
+      document.getElementById('statLabel1').textContent = pack.ui.statLabels[0];
+      document.getElementById('statLabel2').textContent = pack.ui.statLabels[1];
+      document.getElementById('statLabel3').textContent = pack.ui.statLabels[2];
+
+      document.getElementById('formTitle').textContent = pack.ui.formTitle;
+      document.getElementById('formDesc').textContent = pack.ui.formDesc;
+      document.getElementById('labelBrand').textContent = pack.ui.labels.brand;
+      document.getElementById('labelProduct').textContent = pack.ui.labels.product;
+      document.getElementById('labelCategory').textContent = pack.ui.labels.category;
+      document.getElementById('labelMood').textContent = pack.ui.labels.mood;
+      document.getElementById('labelAudience').textContent = pack.ui.labels.audience;
+      document.getElementById('labelBenefit').textContent = pack.ui.labels.benefit;
+      document.getElementById('labelIngredient').textContent = pack.ui.labels.ingredient;
+      document.getElementById('labelGoal').textContent = pack.ui.labels.goal;
+      document.getElementById('labelNotes').textContent = pack.ui.labels.notes;
+
+      fields.brand.placeholder = pack.ui.placeholders.brand;
+      fields.product.placeholder = pack.ui.placeholders.product;
+      fields.audience.placeholder = pack.ui.placeholders.audience;
+      fields.benefit.placeholder = pack.ui.placeholders.benefit;
+      fields.ingredient.placeholder = pack.ui.placeholders.ingredient;
+      fields.notes.placeholder = pack.ui.placeholders.notes;
+
+      const setOptions = (select, options) => {
+        const previous = select.value;
+        select.innerHTML = options.map((option) => `<option value="${option}">${option}</option>`).join('');
+        if (options.includes(previous)) {
+          select.value = previous;
+        }
+      };
+
+      setOptions(fields.category, pack.options.category);
+      setOptions(fields.mood, pack.options.mood);
+      setOptions(fields.goal, pack.options.goal);
+
+      document.getElementById('generateBtn').textContent = pack.ui.buttons.generate;
+      document.getElementById('randomBtn').textContent = pack.ui.buttons.random;
+
+      document.getElementById('resultsTitle').textContent = pack.ui.resultsTitle;
+      document.getElementById('resultsDesc').textContent = pack.ui.resultsDesc;
+      document.getElementById('previewTitle').textContent = pack.ui.previewTitle;
+      document.getElementById('previewDesc').textContent = pack.ui.previewDesc;
+      document.getElementById('previewCarouselTitle').textContent = pack.ui.previewCarouselTitle;
+      document.getElementById('previewCarouselDesc').textContent = pack.ui.previewCarouselDesc;
+
+      document.querySelectorAll('#langSwitch button').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      });
+
+      const content = generateContent();
+      renderResults(content);
+      document.getElementById('previewBrand').textContent = content.brand;
+      document.getElementById('previewHeadline').textContent = content.headline || pack.templates.previewHeadline;
+      document.getElementById('previewCaption').textContent = content.hashtags.split(' ').slice(0, 3).join(' ');
+    }
+
+    document.getElementById('langSwitch').addEventListener('click', (event) => {
+      const lang = event.target.dataset.lang;
+      if (lang) {
+        setLanguage(lang);
+      }
+    });
+
     // 초기 프리뷰
-    renderResults(generateContent());
+    setLanguage('ko');
   </script>
 </body>
 </html>
