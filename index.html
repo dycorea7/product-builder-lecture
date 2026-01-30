@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>K-뷰티 브랜드 인스타그램 콘텐츠 생성기</title>
+  <title>K-뷰티 브랜드 찾기</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
@@ -26,8 +26,6 @@
       --input-bg: #ffffff;
       --orb-one: radial-gradient(circle at 30% 30%, #ffd4df, transparent 70%);
       --orb-two: radial-gradient(circle at 60% 40%, #c7f2ea, transparent 65%);
-      --feed-card-1: linear-gradient(130deg, #ffe4e9, #e9f4ff);
-      --feed-card-2: linear-gradient(130deg, #fff1d6, #ffe6f1);
     }
 
     [data-theme="dark"] {
@@ -49,15 +47,9 @@
       --input-bg: #1a1a1a;
       --orb-one: radial-gradient(circle at 30% 30%, rgba(255, 100, 120, 0.15), transparent 70%);
       --orb-two: radial-gradient(circle at 60% 40%, rgba(53, 208, 186, 0.15), transparent 65%);
-      --feed-card-1: linear-gradient(130deg, #2a2025, #1f2530);
-      --feed-card-2: linear-gradient(130deg, #2a2520, #2a1f25);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Space Grotesk', 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
@@ -79,52 +71,36 @@
       filter: blur(0.5px);
       opacity: 0.8;
       z-index: 0;
+      pointer-events: none;
     }
 
     .orb.one {
-      width: 200px;
-      height: 200px;
+      width: 200px; height: 200px;
       background: var(--orb-one);
-      top: 30px;
-      right: 80px;
+      top: 30px; right: 80px;
     }
 
     .orb.two {
-      width: 240px;
-      height: 240px;
+      width: 240px; height: 240px;
       background: var(--orb-two);
-      bottom: 40px;
-      left: -40px;
+      bottom: 40px; left: -40px;
     }
 
-    header {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 32px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-      margin-bottom: 40px;
+    .theme-toggle {
+      position: fixed;
+      top: 20px; right: 20px;
+      z-index: 100;
+      background: var(--card);
+      border: 1px solid var(--outline);
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: all 0.2s ease;
     }
 
-    .title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.4rem, 4vw, 3.6rem);
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-
-    .subtitle {
-      font-size: 1.05rem;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
-
-    .badge-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .theme-toggle:hover { transform: scale(1.05); }
 
     .lang-switch {
       display: flex;
@@ -150,287 +126,387 @@
       box-shadow: 0 8px 20px rgba(255, 107, 122, 0.2);
     }
 
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: var(--card);
-      border: 1px solid var(--outline);
-      border-radius: 999px;
-      padding: 10px 16px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px var(--shadow);
-      transition: all 0.2s ease;
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.05);
-    }
-
-    .badge {
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: var(--card);
-      border: 1px solid var(--outline);
-      font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 8px 24px rgba(22, 22, 22, 0.05);
-    }
-
-    .hero-card {
-      background: var(--card);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 18px 50px var(--shadow);
-      border: 1px solid var(--outline);
-    }
-
-    .hero-card h3 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
-
-    .hero-card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 18px;
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .stat {
-      background: var(--paper);
-      border-radius: 16px;
-      padding: 12px;
+    header {
       text-align: center;
-      font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 40px;
     }
 
-    .stat strong {
-      display: block;
+    .header-top {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .search-area {
+      max-width: 640px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .search-area input {
+      width: 100%;
+      padding: 16px 20px 16px 48px;
+      border-radius: 999px;
+      border: 1px solid var(--outline);
+      background: var(--card);
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--ink);
+      box-shadow: 0 12px 40px var(--shadow);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-area input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
       font-size: 1.1rem;
-      margin-bottom: 4px;
+      pointer-events: none;
     }
 
-    main {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-item strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--accent-strong);
+    }
+
+    .stat-item span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .filter-section {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 40px var(--shadow);
+      border: 1px solid var(--outline);
+      margin-bottom: 32px;
       position: relative;
       z-index: 1;
     }
 
-    .panel {
-      background: var(--card);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 18px 50px var(--shadow);
-      border: 1px solid var(--outline);
-    }
-
-    .panel h2 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-    }
-
-    .panel p {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 20px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field label {
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--outline);
-      background: var(--input-bg);
-      font-size: 0.95rem;
-      font-family: inherit;
-      color: var(--ink);
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
-
-    .actions {
+    .filter-row {
       display: flex;
       gap: 12px;
-      margin-top: 20px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
-    .primary-btn,
-    .ghost-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 24px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .filter-row label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      white-space: nowrap;
     }
 
-    .primary-btn {
-      background: var(--stroke);
-      color: white;
-      box-shadow: 0 12px 30px rgba(255, 63, 95, 0.25);
-    }
-
-    .ghost-btn {
-      background: var(--card);
-      border: 1px solid var(--outline);
-      color: var(--ink-soft);
-    }
-
-    .primary-btn:hover,
-    .ghost-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .results {
-      display: grid;
-      gap: 16px;
-    }
-
-    .result-card {
-      border: 1px solid var(--outline);
-      border-radius: 18px;
-      padding: 18px;
-      background: var(--card);
-      position: relative;
-      overflow: hidden;
-      animation: rise 0.5s ease;
-    }
-
-    .result-card h4 {
-      font-size: 1rem;
-      margin-bottom: 10px;
-    }
-
-    .result-card pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-family: inherit;
-      color: var(--ink-soft);
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      border: 1px solid var(--outline);
-      background: var(--card);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      color: var(--ink-soft);
-    }
-
-    .tag-list {
+    .filter-chips {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      flex: 1;
     }
 
-    .tag {
+    .chip {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--outline);
+      background: var(--paper);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--ink-soft);
+    }
+
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+    }
+
+    .chip.active {
+      background: var(--tag-bg);
+      border-color: rgba(255, 107, 122, 0.5);
+      color: var(--accent-strong);
+    }
+
+    .filter-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--outline);
+      margin: 14px 0;
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 40px var(--shadow);
+      border: 1px solid var(--outline);
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .brand-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px var(--shadow);
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .brand-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .brand-info h3 {
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+
+    .brand-info span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .brand-desc {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .brand-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .brand-tag {
       background: var(--tag-bg);
       color: var(--accent-strong);
       border-radius: 999px;
       padding: 4px 10px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
     }
 
-    .phone {
-      border-radius: 30px;
-      border: 1px solid var(--outline);
-      padding: 16px;
-      background: var(--card);
-      box-shadow: inset 0 0 0 4px var(--paper);
-    }
-
-    .phone-header {
+    .brand-meta {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(130deg, #ffb6c6, #b7d9ff);
-    }
-
-    .story-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .story-dot {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: var(--paper);
-      border: 2px solid var(--accent);
-    }
-
-    .feed-card {
-      background: var(--feed-card-1);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 12px;
-    }
-
-    .feed-card-alt {
-      background: var(--feed-card-2);
-    }
-
-    .feed-card h5 {
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
-
-    .feed-card p {
+      gap: 16px;
       font-size: 0.8rem;
       color: var(--muted);
     }
 
-    .reveal {
-      animation: fadeUp 0.6s ease;
+    .brand-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-detail-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .brand-detail-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .brand-detail {
+      background: var(--card);
+      border-radius: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: 0 24px 60px var(--shadow);
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .brand-detail-overlay.open .brand-detail {
+      transform: translateY(0);
+    }
+
+    .detail-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      border: 1px solid var(--outline);
+      background: var(--paper);
+      border-radius: 999px;
+      width: 36px; height: 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+    }
+
+    .detail-logo {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .detail-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .detail-category {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .detail-desc {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .detail-section {
+      margin-bottom: 18px;
+    }
+
+    .detail-section h4 {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      color: var(--accent-strong);
+    }
+
+    .detail-section p, .detail-section ul {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    .detail-section ul {
+      padding-left: 18px;
+    }
+
+    .detail-section ul li {
+      margin-bottom: 4px;
+    }
+
+    .detail-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .detail-link {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: var(--stroke);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: transform 0.2s ease;
+    }
+
+    .detail-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .no-results .icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+    }
+
+    .no-results p {
+      font-size: 1rem;
     }
 
     @keyframes fadeUp {
@@ -438,711 +514,733 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 960px) {
-      header {
-        grid-template-columns: 1fr;
-      }
-      main {
-        grid-template-columns: 1fr;
-      }
-      .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-stats {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 700px) {
+      .brand-grid { grid-template-columns: 1fr; }
+      .stats-row { gap: 20px; }
+      .filter-row { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">&#x1F319;</button>
+
   <div class="page">
     <div class="orb one"></div>
     <div class="orb two"></div>
 
     <header>
-      <div>
+      <div class="header-top">
         <div class="lang-switch" id="langSwitch">
-          <button type="button" data-lang="ko" class="active">한국어</button>
+          <button type="button" data-lang="ko" class="active">&#xD55C;&#xAD6D;&#xC5B4;</button>
           <button type="button" data-lang="en">English</button>
         </div>
-        <div class="badge-row" id="badgeRow">
-          <span class="badge">K-뷰티 톤 & 무드</span>
-          <span class="badge">릴스 + 캐러셀</span>
-          <span class="badge">브랜드 맞춤</span>
-        </div>
-        <h1 class="title" id="pageTitle">K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기</h1>
-        <p class="subtitle" id="pageSubtitle">제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.</p>
-        <div class="tag-list" id="tagList">
-          <span class="tag">글로우</span>
-          <span class="tag">스킨케어 루틴</span>
-          <span class="tag">데일리 셀프케어</span>
-          <span class="tag">클린 뷰티</span>
-        </div>
       </div>
-      <div class="hero-card">
-        <h3 id="heroTitle">오늘의 콘텐츠 키포인트</h3>
-        <p id="heroDesc">알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.</p>
-        <div class="hero-stats">
-          <div class="stat"><strong>6</strong><span id="statLabel1">콘텐츠 포맷</span></div>
-          <div class="stat"><strong>20+</strong><span id="statLabel2">해시태그</span></div>
-          <div class="stat"><strong>5</strong><span id="statLabel3">컷 기획</span></div>
-        </div>
+      <h1 class="title" id="pageTitle">K-&#xBDF0;&#xD2F0; &#xBE0C;&#xB79C;&#xB4DC; &#xCC3E;&#xAE30;</h1>
+      <p class="subtitle" id="pageSubtitle">&#xCE74;&#xD14C;&#xACE0;&#xB9AC;, &#xD53C;&#xBD80; &#xD0C0;&#xC785;, &#xAC00;&#xACA9;&#xB300;&#xBCC4;&#xB85C; &#xB098;&#xC5D0;&#xAC8C; &#xB531; &#xB9DE;&#xB294; K-&#xBDF0;&#xD2F0; &#xBE0C;&#xB79C;&#xB4DC;&#xB97C; &#xCC3E;&#xC544;&#xBCF4;&#xC138;&#xC694;.</p>
+
+      <div class="search-area">
+        <span class="search-icon">&#x1F50D;</span>
+        <input type="text" id="searchInput" placeholder="&#xBE0C;&#xB79C;&#xB4DC;&#xBA85; &#xB610;&#xB294; &#xD0A4;&#xC6CC;&#xB4DC;&#xB85C; &#xAC80;&#xC0C9;..." />
+      </div>
+
+      <div class="stats-row" id="statsRow">
+        <div class="stat-item"><strong id="statBrands">32</strong><span id="statLabelBrands">&#xBE0C;&#xB79C;&#xB4DC;</span></div>
+        <div class="stat-item"><strong id="statCategories">6</strong><span id="statLabelCategories">&#xCE74;&#xD14C;&#xACE0;&#xB9AC;</span></div>
+        <div class="stat-item"><strong id="statShowing">32</strong><span id="statLabelShowing">&#xAC80;&#xC0C9; &#xACB0;&#xACFC;</span></div>
       </div>
     </header>
 
-    <main>
-      <section class="panel">
-        <h2 id="formTitle">브랜드 정보를 입력하세요</h2>
-        <p id="formDesc">입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.</p>
-        <div class="form-grid">
-          <div class="field">
-            <label for="brand" id="labelBrand">브랜드명</label>
-            <input id="brand" type="text" placeholder="예: LUMIÉ, Dew&Day" />
-          </div>
-          <div class="field">
-            <label for="product" id="labelProduct">제품명</label>
-            <input id="product" type="text" placeholder="예: 글로우 세럼" />
-          </div>
-          <div class="field">
-            <label for="category" id="labelCategory">제품 카테고리</label>
-            <select id="category">
-              <option value="스킨케어">스킨케어</option>
-              <option value="메이크업">메이크업</option>
-              <option value="선케어">선케어</option>
-              <option value="바디케어">바디케어</option>
-              <option value="헤어케어">헤어케어</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="mood" id="labelMood">톤 & 무드</label>
-            <select id="mood">
-              <option value="감각적이고 시크">감각적이고 시크</option>
-              <option value="친근하고 상큼">친근하고 상큼</option>
-              <option value="럭셔리하고 미니멀">럭셔리하고 미니멀</option>
-              <option value="클린하고 힐링">클린하고 힐링</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="audience" id="labelAudience">타깃 고객</label>
-            <input id="audience" type="text" placeholder="예: 20대 민감성 피부" />
-          </div>
-          <div class="field">
-            <label for="benefit" id="labelBenefit">핵심 효능</label>
-            <input id="benefit" type="text" placeholder="예: 속광, 진정, 톤업" />
-          </div>
-          <div class="field">
-            <label for="ingredient" id="labelIngredient">키 성분/텍스처</label>
-            <input id="ingredient" type="text" placeholder="예: 시카 + 수분 젤" />
-          </div>
-          <div class="field">
-            <label for="goal" id="labelGoal">캠페인 목표</label>
-            <select id="goal">
-              <option value="신제품 런칭">신제품 런칭</option>
-              <option value="재구매 유도">재구매 유도</option>
-              <option value="리뷰 확보">리뷰 확보</option>
-              <option value="브랜드 인지도">브랜드 인지도</option>
-            </select>
-          </div>
-          <div class="field" style="grid-column: span 2;">
-            <label for="notes" id="labelNotes">브랜드 키워드 (선택)</label>
-            <textarea id="notes" placeholder="예: 비건, 피부장벽, 베이지 톤 패키지"></textarea>
-          </div>
-        </div>
-        <div class="actions">
-          <button class="primary-btn" id="generateBtn">콘텐츠 생성</button>
-          <button class="ghost-btn" id="randomBtn">랜덤 템플릿</button>
-        </div>
-      </section>
-
-      <section class="panel">
-        <h2 id="resultsTitle">인스타그램 결과물</h2>
-        <p id="resultsDesc">각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.</p>
-        <div class="results" id="results"></div>
-      </section>
-    </main>
-
-    <section class="panel" style="margin-top: 28px;">
-      <h2 id="previewTitle">피드 미리보기</h2>
-      <p id="previewDesc">생성된 톤과 어울리는 비주얼 방향을 참고하세요.</p>
-      <div class="phone reveal">
-        <div class="phone-header">
-          <div class="avatar"></div>
-          <div>
-            <strong id="previewBrand">LUMIÉ</strong>
-            <div style="font-size: 0.75rem; color: var(--muted);">@lumié_glow</div>
-          </div>
-        </div>
-        <div class="story-bar">
-          <div class="story-dot"></div>
-          <div class="story-dot"></div>
-          <div class="story-dot"></div>
-        </div>
-        <div class="feed-card">
-          <h5 id="previewHeadline">하루 종일 무너짐 없는 속광</h5>
-          <p id="previewCaption">#글로우 #수분세럼 #데일리루틴</p>
-        </div>
-        <div class="feed-card feed-card-alt">
-          <h5 id="previewCarouselTitle">5컷 캐러셀 방향</h5>
-          <p id="previewCarouselDesc">1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA</p>
-        </div>
+    <div class="filter-section" id="filterSection">
+      <div class="filter-row">
+        <label id="filterLabelCategory">&#xCE74;&#xD14C;&#xACE0;&#xB9AC;</label>
+        <div class="filter-chips" id="categoryChips"></div>
       </div>
-    </section>
+      <div class="filter-divider"></div>
+      <div class="filter-row">
+        <label id="filterLabelSkin">&#xD53C;&#xBD80; &#xD0C0;&#xC785;</label>
+        <div class="filter-chips" id="skinChips"></div>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-row">
+        <label id="filterLabelPrice">&#xAC00;&#xACA9;&#xB300;</label>
+        <div class="filter-chips" id="priceChips"></div>
+      </div>
+    </div>
+
+    <div class="brand-grid" id="brandGrid"></div>
+    <div class="no-results" id="noResults" style="display:none;">
+      <div class="icon">&#x1F50D;</div>
+      <p id="noResultsText">&#xAC80;&#xC0C9; &#xACB0;&#xACFC;&#xAC00; &#xC5C6;&#xC2B5;&#xB2C8;&#xB2E4;. &#xB2E4;&#xB978; &#xD544;&#xD130;&#xB97C; &#xC2DC;&#xB3C4;&#xD574;&#xBCF4;&#xC138;&#xC694;.</p>
+    </div>
+  </div>
+
+  <div class="brand-detail-overlay" id="detailOverlay">
+    <div class="brand-detail" id="detailContent">
+      <button class="detail-close" id="detailClose" type="button">&times;</button>
+      <div id="detailBody"></div>
+    </div>
   </div>
 
   <script>
-    const fields = {
-      brand: document.getElementById('brand'),
-      product: document.getElementById('product'),
-      category: document.getElementById('category'),
-      mood: document.getElementById('mood'),
-      audience: document.getElementById('audience'),
-      benefit: document.getElementById('benefit'),
-      ingredient: document.getElementById('ingredient'),
-      goal: document.getElementById('goal'),
-      notes: document.getElementById('notes')
-    };
+    const brands = [
+      {
+        id: 1, name: 'Sulwhasoo', nameKo: '설화수',
+        category: 'skincare', subcategory: 'anti-aging',
+        skin: ['dry', 'normal'], price: 'premium',
+        logo: 'S', color: '#8B6914',
+        descKo: '한방 과학 기반의 럭셔리 스킨케어 브랜드. 인삼 성분을 활용한 안티에이징 라인이 대표적이며, 전통과 현대를 결합한 프리미엄 제품을 선보입니다.',
+        descEn: 'Luxury skincare brand based on herbal science. Known for ginseng-based anti-aging lines, combining tradition and modernity in premium products.',
+        tagsKo: ['한방', '안티에이징', '인삼', '럭셔리'],
+        tagsEn: ['Herbal', 'Anti-aging', 'Ginseng', 'Luxury'],
+        founded: '1966', parent: 'Amorepacific',
+        bestKo: ['윤조에센스', '자음생크림', '퍼스트케어 액티베이팅 세럼'],
+        bestEn: ['First Care Activating Serum', 'Concentrated Ginseng Cream', 'Essential Balancing Water']
+      },
+      {
+        id: 2, name: 'Laneige', nameKo: '라네즈',
+        category: 'skincare', subcategory: 'hydration',
+        skin: ['dry', 'combination'], price: 'mid',
+        logo: 'L', color: '#1B7FA3',
+        descKo: '수분 과학에 특화된 스킨케어 브랜드. 워터 슬리핑 마스크로 글로벌 인지도를 얻었으며, 촉촉하고 맑은 피부를 위한 제품 라인을 제공합니다.',
+        descEn: 'Skincare brand specializing in moisture science. Gained global recognition with the Water Sleeping Mask, offering products for hydrated, clear skin.',
+        tagsKo: ['수분', '슬리핑마스크', '글로벌', '보습'],
+        tagsEn: ['Hydration', 'Sleeping mask', 'Global', 'Moisturizing'],
+        founded: '1994', parent: 'Amorepacific',
+        bestKo: ['워터 슬리핑 마스크', '립 슬리핑 마스크', '워터뱅크 크림'],
+        bestEn: ['Water Sleeping Mask', 'Lip Sleeping Mask', 'Water Bank Cream']
+      },
+      {
+        id: 3, name: 'Innisfree', nameKo: '이니스프리',
+        category: 'skincare', subcategory: 'natural',
+        skin: ['oily', 'combination', 'sensitive'], price: 'budget',
+        logo: 'I', color: '#3A7D44',
+        descKo: '제주 자연 원료를 기반으로 한 자연주의 뷰티 브랜드. 그린티, 화산송이 등 제주 성분을 활용한 클린 뷰티 제품이 대표적입니다.',
+        descEn: 'Nature-inspired beauty brand based on Jeju Island ingredients. Known for clean beauty products using green tea, volcanic clusters and other Jeju elements.',
+        tagsKo: ['제주', '자연주의', '그린티', '클린뷰티'],
+        tagsEn: ['Jeju', 'Natural', 'Green tea', 'Clean beauty'],
+        founded: '2000', parent: 'Amorepacific',
+        bestKo: ['그린티 씨드 세럼', '노세범 미네랄 파우더', '화산송이 모공 마스크'],
+        bestEn: ['Green Tea Seed Serum', 'No-Sebum Mineral Powder', 'Volcanic Pore Clay Mask']
+      },
+      {
+        id: 4, name: 'COSRX', nameKo: '코스알엑스',
+        category: 'skincare', subcategory: 'acne',
+        skin: ['oily', 'sensitive', 'acne'], price: 'budget',
+        logo: 'C', color: '#E63946',
+        descKo: '피부 고민별 솔루션을 제공하는 기능성 스킨케어 브랜드. 심플한 성분 구성과 효과적인 포뮬러로 글로벌 K-뷰티 대표 브랜드로 자리잡았습니다.',
+        descEn: 'Functional skincare brand offering solution-based products. Known globally for simple yet effective formulas targeting specific skin concerns.',
+        tagsKo: ['기능성', '여드름', '심플', '성분중심'],
+        tagsEn: ['Functional', 'Acne care', 'Simple', 'Ingredient-focused'],
+        founded: '2013', parent: 'Independent',
+        bestKo: ['어드밴스드 스네일 96 에센스', '아크네 피플 마스터 패치', 'BHA 블랙헤드 파워 리퀴드'],
+        bestEn: ['Advanced Snail 96 Mucin Essence', 'Acne Pimple Master Patch', 'BHA Blackhead Power Liquid']
+      },
+      {
+        id: 5, name: 'Dr. Jart+', nameKo: '닥터자르트',
+        category: 'skincare', subcategory: 'derma',
+        skin: ['sensitive', 'dry', 'normal'], price: 'mid',
+        logo: 'D', color: '#5C6BC0',
+        descKo: '더마코스메틱 컨셉의 스킨케어 브랜드. 시카페어 라인과 세라마이딘 라인이 대표적이며, 피부 장벽 강화와 진정에 특화되어 있습니다.',
+        descEn: 'Derma-cosmetic skincare brand. Known for Cicapair and Ceramidin lines, specializing in skin barrier strengthening and soothing.',
+        tagsKo: ['더마', '시카', '피부장벽', '세라마이드'],
+        tagsEn: ['Derma', 'Cica', 'Skin barrier', 'Ceramide'],
+        founded: '2004', parent: 'Estée Lauder',
+        bestKo: ['시카페어 크림', '세라마이딘 크림', '바이탈 하이드라 솔루션'],
+        bestEn: ['Cicapair Cream', 'Ceramidin Cream', 'Vital Hydra Solution']
+      },
+      {
+        id: 6, name: 'Etude', nameKo: '에뛰드',
+        category: 'makeup', subcategory: 'color',
+        skin: ['normal', 'combination'], price: 'budget',
+        logo: 'E', color: '#FF69B4',
+        descKo: '트렌디한 컬러 메이크업 브랜드. 합리적인 가격대의 다양한 컬러 제품과 귀여운 패키지로 젊은 세대에게 인기가 높습니다.',
+        descEn: 'Trendy color makeup brand. Popular among younger generations for affordable, diverse color products and cute packaging.',
+        tagsKo: ['컬러메이크업', '트렌디', '합리적', '귀여운'],
+        tagsEn: ['Color makeup', 'Trendy', 'Affordable', 'Cute'],
+        founded: '1985', parent: 'Amorepacific',
+        bestKo: ['플레이 컬러 아이즈', '디어 달링 워터 젤 틴트', '드로잉 아이브로우'],
+        bestEn: ['Play Color Eyes', 'Dear Darling Water Gel Tint', 'Drawing Eyebrow']
+      },
+      {
+        id: 7, name: 'Missha', nameKo: '미샤',
+        category: 'skincare', subcategory: 'essence',
+        skin: ['normal', 'dry', 'combination'], price: 'budget',
+        logo: 'M', color: '#9C27B0',
+        descKo: 'K-뷰티 1세대 브랜드로 가성비 높은 스킨케어 제품을 제공합니다. 타임 레볼루션 에센스가 SK-II 대안으로 글로벌 인기를 얻었습니다.',
+        descEn: 'First-generation K-beauty brand offering high-value skincare. The Time Revolution Essence gained global popularity as an SK-II alternative.',
+        tagsKo: ['가성비', '에센스', '퍼스트에센스', '글로벌'],
+        tagsEn: ['Value', 'Essence', 'First essence', 'Global'],
+        founded: '2000', parent: 'Able C&C',
+        bestKo: ['타임 레볼루션 에센스', 'M 퍼펙트 커버 BB크림', '초보양 에센스'],
+        bestEn: ['Time Revolution Essence', 'M Perfect Cover BB Cream', 'Cho Bo Yang Essence']
+      },
+      {
+        id: 8, name: 'Banila Co', nameKo: '바닐라코',
+        category: 'skincare', subcategory: 'cleansing',
+        skin: ['normal', 'oily', 'combination'], price: 'mid',
+        logo: 'B', color: '#FF8F00',
+        descKo: '클린 잇 제로 클렌징 밤으로 유명한 브랜드. 메이크업 클렌징에 특화된 제품이 대표적이며, 깨끗한 세정력과 촉촉한 사용감을 제공합니다.',
+        descEn: 'Famous for the Clean It Zero cleansing balm. Specializes in makeup cleansing with thorough yet moisturizing formulas.',
+        tagsKo: ['클렌징', '클렌징밤', '세정력', '촉촉'],
+        tagsEn: ['Cleansing', 'Cleansing balm', 'Deep clean', 'Moisturizing'],
+        founded: '2005', parent: 'F&F',
+        bestKo: ['클린 잇 제로', '프라임 프라이머', '잇 래디언트 CC크림'],
+        bestEn: ['Clean It Zero', 'Prime Primer', 'It Radiant CC Cream']
+      },
+      {
+        id: 9, name: 'TONYMOLY', nameKo: '토니모리',
+        category: 'skincare', subcategory: 'fun',
+        skin: ['normal', 'combination'], price: 'budget',
+        logo: 'T', color: '#4CAF50',
+        descKo: '유니크한 패키지 디자인이 특징인 뷰티 브랜드. 과일, 동물 등 재미있는 모양의 제품으로 유명하며, 합리적인 가격의 기초 라인을 보유하고 있습니다.',
+        descEn: 'Beauty brand known for unique packaging designs. Famous for fun fruit and animal-shaped products with affordable basic skincare lines.',
+        tagsKo: ['유니크패키지', '합리적', '펀뷰티', '과일'],
+        tagsEn: ['Unique packaging', 'Affordable', 'Fun beauty', 'Fruit'],
+        founded: '2006', parent: 'Independent',
+        bestKo: ['I\'m Real 마스크시트', '달팽이 크림', '판다스 드림 아이패치'],
+        bestEn: ['I\'m Real Mask Sheet', 'Snail Cream', 'Panda\'s Dream Eye Patch']
+      },
+      {
+        id: 10, name: 'Hera', nameKo: '헤라',
+        category: 'makeup', subcategory: 'lip',
+        skin: ['normal', 'dry'], price: 'premium',
+        logo: 'H', color: '#1a1a1a',
+        descKo: '서울 감성의 프리미엄 메이크업 & 스킨케어 브랜드. 센슈얼 파우더 매트 립스틱이 시그니처 제품이며, 세련되고 시크한 무드를 표현합니다.',
+        descEn: 'Premium makeup & skincare brand with Seoul sensibility. The Sensual Powder Matte lipstick is iconic, expressing sophisticated, chic moods.',
+        tagsKo: ['프리미엄', '립스틱', '서울감성', '시크'],
+        tagsEn: ['Premium', 'Lipstick', 'Seoul vibe', 'Chic'],
+        founded: '1995', parent: 'Amorepacific',
+        bestKo: ['센슈얼 파우더 매트', '블랙 파운데이션', 'UV 미스트 쿠션'],
+        bestEn: ['Sensual Powder Matte', 'Black Foundation', 'UV Mist Cushion']
+      },
+      {
+        id: 11, name: 'Klairs', nameKo: '클레어스',
+        category: 'skincare', subcategory: 'sensitive',
+        skin: ['sensitive', 'dry'], price: 'mid',
+        logo: 'K', color: '#F0C75E',
+        descKo: '민감성 피부를 위한 저자극 스킨케어 브랜드. 비건 & 클린 뷰티를 지향하며, 순한 성분으로 피부 진정과 보습에 집중합니다.',
+        descEn: 'Gentle skincare brand for sensitive skin. Pursuing vegan & clean beauty, focusing on soothing and hydration with mild ingredients.',
+        tagsKo: ['민감성', '비건', '저자극', '진정'],
+        tagsEn: ['Sensitive', 'Vegan', 'Gentle', 'Soothing'],
+        founded: '2010', parent: 'Wishcompany',
+        bestKo: ['서플 프레파레이션 토너', '미드나잇 블루 카밍 크림', '프레쉴리 쥬스드 비타민 드롭'],
+        bestEn: ['Supple Preparation Toner', 'Midnight Blue Calming Cream', 'Freshly Juiced Vitamin Drop']
+      },
+      {
+        id: 12, name: 'Romand', nameKo: '롬앤',
+        category: 'makeup', subcategory: 'lip',
+        skin: ['normal', 'combination'], price: 'budget',
+        logo: 'R', color: '#D32F2F',
+        descKo: '감성 컬러 메이크업 브랜드. 쥬시 래스팅 틴트와 베러 댄 아이즈 팔레트로 유명하며, 트렌디한 컬러와 합리적인 가격이 강점입니다.',
+        descEn: 'Sensory color makeup brand. Famous for Juicy Lasting Tint and Better Than Eyes palette, known for trendy colors at affordable prices.',
+        tagsKo: ['틴트', '컬러감', '트렌디', '합리적'],
+        tagsEn: ['Tint', 'Color', 'Trendy', 'Affordable'],
+        founded: '2016', parent: 'iStyle',
+        bestKo: ['쥬시 래스팅 틴트', '베러 댄 아이즈', '제로 벨벳 틴트'],
+        bestEn: ['Juicy Lasting Tint', 'Better Than Eyes', 'Zero Velvet Tint']
+      },
+      {
+        id: 13, name: 'Amorepacific', nameKo: '아모레퍼시픽',
+        category: 'skincare', subcategory: 'anti-aging',
+        skin: ['dry', 'normal'], price: 'premium',
+        logo: 'A', color: '#004D40',
+        descKo: '한국 뷰티 산업의 대표 기업이자 프리미엄 스킨케어 브랜드. 녹차와 대나무 수액 등 아시아 원료를 활용한 럭셔리 안티에이징 제품을 선보입니다.',
+        descEn: 'Leading Korean beauty conglomerate and premium skincare brand. Offers luxury anti-aging products using Asian ingredients like green tea and bamboo sap.',
+        tagsKo: ['럭셔리', '녹차', '안티에이징', '프리미엄'],
+        tagsEn: ['Luxury', 'Green tea', 'Anti-aging', 'Premium'],
+        founded: '1945', parent: 'Amorepacific Corp',
+        bestKo: ['타임 레스폰스 크림', '빈티지 싱글 익스트랙트 에센스', '모이스처 바운드 크림'],
+        bestEn: ['Time Response Cream', 'Vintage Single Extract Essence', 'Moisture Bound Cream']
+      },
+      {
+        id: 14, name: 'Peripera', nameKo: '페리페라',
+        category: 'makeup', subcategory: 'lip',
+        skin: ['normal', 'oily'], price: 'budget',
+        logo: 'P', color: '#E91E63',
+        descKo: '생기 넘치는 컬러 메이크업 브랜드. 잉크 더 에어리 벨벳 틴트가 시그니처이며, 가볍고 발색 좋은 립 제품으로 인기가 높습니다.',
+        descEn: 'Vibrant color makeup brand. The Ink The Airy Velvet tint is iconic, popular for lightweight lip products with great color payoff.',
+        tagsKo: ['립틴트', '벨벳', '생기', '발색'],
+        tagsEn: ['Lip tint', 'Velvet', 'Vibrant', 'Pigmented'],
+        founded: '2006', parent: 'Clio Cosmetics',
+        bestKo: ['잉크 더 에어리 벨벳', '잉크 무드 글로이 틴트', '올 테이크 무드 팔레트'],
+        bestEn: ['Ink The Airy Velvet', 'Ink Mood Glowy Tint', 'All Take Mood Palette']
+      },
+      {
+        id: 15, name: 'Beauty of Joseon', nameKo: '조선미녀',
+        category: 'skincare', subcategory: 'traditional',
+        skin: ['sensitive', 'dry', 'normal'], price: 'budget',
+        logo: 'B', color: '#BF8A4E',
+        descKo: '조선시대 미용법에서 영감을 받은 한방 스킨케어 브랜드. 쌀, 인삼, 프로폴리스 등 전통 성분을 현대적으로 재해석한 제품을 합리적인 가격에 제공합니다.',
+        descEn: 'Herbal skincare brand inspired by Joseon dynasty beauty secrets. Offers modern interpretations of traditional ingredients like rice, ginseng, and propolis at affordable prices.',
+        tagsKo: ['한방', '전통', '쌀', '합리적'],
+        tagsEn: ['Herbal', 'Traditional', 'Rice', 'Affordable'],
+        founded: '2017', parent: 'Independent',
+        bestKo: ['글로우 세럼', '맑은 쌀 선크림', '인삼 에센스 워터'],
+        bestEn: ['Glow Serum', 'Relief Sun', 'Ginseng Essence Water']
+      },
+      {
+        id: 16, name: 'Skin1004', nameKo: '스킨1004',
+        category: 'skincare', subcategory: 'centella',
+        skin: ['sensitive', 'acne', 'oily'], price: 'budget',
+        logo: 'S', color: '#66BB6A',
+        descKo: '마다가스카르 센텔라 성분에 특화된 스킨케어 브랜드. 센텔라 앰플이 대표 제품이며, 진정과 피부 장벽 강화에 집중하는 클린 뷰티 브랜드입니다.',
+        descEn: 'Skincare brand specializing in Madagascar Centella. The Centella Ampoule is the hero product, focusing on soothing and skin barrier strengthening.',
+        tagsKo: ['센텔라', '진정', '클린뷰티', '앰플'],
+        tagsEn: ['Centella', 'Soothing', 'Clean beauty', 'Ampoule'],
+        founded: '2017', parent: 'Independent',
+        bestKo: ['센텔라 앰플', '하이드로 앰플', '센텔라 토닝 토너'],
+        bestEn: ['Centella Ampoule', 'Hydro Ampoule', 'Centella Toning Toner']
+      },
+      {
+        id: 17, name: 'Torriden', nameKo: '토리든',
+        category: 'skincare', subcategory: 'hydration',
+        skin: ['sensitive', 'dry', 'normal'], price: 'budget',
+        logo: 'T', color: '#42A5F5',
+        descKo: '히알루론산 기반 수분 스킨케어 브랜드. 다이브인 세럼이 글로벌 베스트셀러이며, 민감성 피부도 사용할 수 있는 저자극 보습 라인을 제공합니다.',
+        descEn: 'Hyaluronic acid-based hydrating skincare brand. The DIVE-IN Serum is a global bestseller, offering gentle moisturizing lines suitable for sensitive skin.',
+        tagsKo: ['히알루론산', '수분', '저자극', '세럼'],
+        tagsEn: ['Hyaluronic acid', 'Hydration', 'Gentle', 'Serum'],
+        founded: '2020', parent: 'Independent',
+        bestKo: ['다이브인 세럼', '다이브인 토너', '다이브인 크림'],
+        bestEn: ['DIVE-IN Serum', 'DIVE-IN Toner', 'DIVE-IN Cream']
+      },
+      {
+        id: 18, name: 'Clio', nameKo: '클리오',
+        category: 'makeup', subcategory: 'eyes',
+        skin: ['normal', 'oily'], price: 'mid',
+        logo: 'C', color: '#37474F',
+        descKo: '전문적인 메이크업 브랜드. 킬 커버 파운데이션과 프리즘 에어 팔레트가 시그니처이며, 높은 커버력과 지속력을 가진 제품이 강점입니다.',
+        descEn: 'Professional makeup brand. Kill Cover foundation and Prism Air palette are signatures, known for high coverage and long-lasting formulas.',
+        tagsKo: ['프로메이크업', '커버력', '파운데이션', '지속력'],
+        tagsEn: ['Pro makeup', 'Coverage', 'Foundation', 'Long-lasting'],
+        founded: '1993', parent: 'Clio Cosmetics',
+        bestKo: ['킬 커버 파운웨어 쿠션', '프로 아이 팔레트', '샤프 소 심플 워터프루프 펜슬라이너'],
+        bestEn: ['Kill Cover Founwear Cushion', 'Pro Eye Palette', 'Sharp So Simple Waterproof Pencil Liner']
+      },
+      {
+        id: 19, name: 'Mamonde', nameKo: '마몽드',
+        category: 'skincare', subcategory: 'flower',
+        skin: ['normal', 'dry', 'combination'], price: 'mid',
+        logo: 'M', color: '#EC407A',
+        descKo: '꽃에서 영감을 받은 스킨케어 & 메이크업 브랜드. 장미수 토너와 플라워 에센스 마스크가 대표적이며, 꽃 성분의 보습과 영양에 특화되어 있습니다.',
+        descEn: 'Skincare & makeup brand inspired by flowers. Rose Water Toner and Flower Essence Mask are representative, specializing in flower-based hydration and nourishment.',
+        tagsKo: ['꽃', '장미', '보습', '영양'],
+        tagsEn: ['Flower', 'Rose', 'Moisturizing', 'Nourishing'],
+        founded: '1991', parent: 'Amorepacific',
+        bestKo: ['로즈 워터 토너', '레드 에너지 세럼', '크리미 틴트 컬러밤'],
+        bestEn: ['Rose Water Toner', 'Red Energy Serum', 'Creamy Tint Color Balm']
+      },
+      {
+        id: 20, name: 'Some By Mi', nameKo: '썸바이미',
+        category: 'skincare', subcategory: 'acne',
+        skin: ['oily', 'acne', 'combination'], price: 'budget',
+        logo: 'S', color: '#00897B',
+        descKo: 'AHA, BHA, PHA 산성분 스킨케어로 유명한 브랜드. 미라클 토너가 30일 기적이라는 슬로건으로 글로벌 히트를 기록했습니다.',
+        descEn: 'Brand famous for AHA, BHA, PHA acid skincare. The Miracle Toner became a global hit with its 30-day miracle slogan.',
+        tagsKo: ['AHA/BHA', '각질케어', '모공', '트러블'],
+        tagsEn: ['AHA/BHA', 'Exfoliation', 'Pores', 'Trouble care'],
+        founded: '2016', parent: 'Independent',
+        bestKo: ['미라클 토너', '트루시카 미라클 세럼', '바이 바이 블랙헤드 버블 클렌저'],
+        bestEn: ['Miracle Toner', 'Truecica Miracle Serum', 'Bye Bye Blackhead Bubble Cleanser']
+      },
+      {
+        id: 21, name: 'Espoir', nameKo: '에스쁘아',
+        category: 'makeup', subcategory: 'base',
+        skin: ['normal', 'oily', 'combination'], price: 'mid',
+        logo: 'E', color: '#795548',
+        descKo: '프로페셔널 메이크업 아티스트 브랜드. 쿠션과 파운데이션의 커버력과 지속력이 뛰어나며, 세련된 베이스 메이크업 제품이 강점입니다.',
+        descEn: 'Professional makeup artist brand. Known for excellent coverage and longevity in cushions and foundations, with refined base makeup products.',
+        tagsKo: ['프로', '베이스', '쿠션', '커버력'],
+        tagsEn: ['Pro', 'Base', 'Cushion', 'Coverage'],
+        founded: '2012', parent: 'Amorepacific',
+        bestKo: ['프로 테일러 비 파우더 쿠션', '쿠튀르 립 틴트', '아이컬러북'],
+        bestEn: ['Pro Tailor Be Powder Cushion', 'Couture Lip Tint', 'Eye Color Book']
+      },
+      {
+        id: 22, name: 'Round Lab', nameKo: '라운드랩',
+        category: 'skincare', subcategory: 'cleansing',
+        skin: ['sensitive', 'dry', 'normal'], price: 'budget',
+        logo: 'R', color: '#5C6BC0',
+        descKo: '독도 해양 심층수를 활용한 스킨케어 브랜드. 독도 토너가 가성비 토너의 대명사로 자리잡았으며, 순한 클렌징 제품도 인기가 높습니다.',
+        descEn: 'Skincare brand using Dokdo deep sea water. The Dokdo Toner became synonymous with value toners, and gentle cleansing products are also popular.',
+        tagsKo: ['독도', '해양수', '토너', '순한'],
+        tagsEn: ['Dokdo', 'Sea water', 'Toner', 'Gentle'],
+        founded: '2018', parent: 'Independent',
+        bestKo: ['독도 토너', '독도 클렌징 오일', '자작나무 수분 크림'],
+        bestEn: ['Dokdo Toner', 'Dokdo Cleansing Oil', 'Birch Moisture Cream']
+      },
+      {
+        id: 23, name: 'Isntree', nameKo: '이즈앤트리',
+        category: 'skincare', subcategory: 'sensitive',
+        skin: ['sensitive', 'acne', 'combination'], price: 'budget',
+        logo: 'I', color: '#8BC34A',
+        descKo: '성분 중심의 스킨케어 브랜드. 히알루론산, 녹차, 병풀 등 검증된 성분을 합리적인 가격에 제공하며, 민감성 피부를 위한 저자극 제품이 강점입니다.',
+        descEn: 'Ingredient-focused skincare brand. Offers proven ingredients like hyaluronic acid, green tea, and centella at affordable prices, with gentle formulas for sensitive skin.',
+        tagsKo: ['성분중심', '저자극', '합리적', '히알루론산'],
+        tagsEn: ['Ingredient-focused', 'Gentle', 'Affordable', 'Hyaluronic acid'],
+        founded: '2015', parent: 'Independent',
+        bestKo: ['히알루론산 토너', '그린티 프레쉬 토너', '클리어 스킨 BHA 토너'],
+        bestEn: ['Hyaluronic Acid Toner', 'Green Tea Fresh Toner', 'Clear Skin BHA Toner']
+      },
+      {
+        id: 24, name: 'Numbuzin', nameKo: '넘버즈인',
+        category: 'skincare', subcategory: 'essence',
+        skin: ['normal', 'combination', 'oily'], price: 'mid',
+        logo: 'N', color: '#FF7043',
+        descKo: '숫자로 표현되는 기능별 스킨케어 브랜드. 3번 세럼(비타민C)이 글로벌 히트를 기록했으며, 직관적인 넘버링 시스템이 특징입니다.',
+        descEn: 'Skincare brand with numbered product lines by function. No.3 Serum (Vitamin C) became a global hit, featuring an intuitive numbering system.',
+        tagsKo: ['넘버링', '비타민C', '글로벌히트', '기능성'],
+        tagsEn: ['Numbering', 'Vitamin C', 'Global hit', 'Functional'],
+        founded: '2020', parent: 'Independent',
+        bestKo: ['3번 비타민C 세럼', '5번 글루타치온 패드', '1번 세라마이드 크림'],
+        bestEn: ['No.3 Vitamin C Serum', 'No.5 Glutathione Pads', 'No.1 Ceramide Cream']
+      },
+      {
+        id: 25, name: 'THE FACE SHOP', nameKo: '더페이스샵',
+        category: 'skincare', subcategory: 'natural',
+        skin: ['normal', 'combination', 'dry'], price: 'budget',
+        logo: 'F', color: '#2E7D32',
+        descKo: '자연주의 뷰티 브랜드. 쌀, 알로에 등 자연 원료 기반의 기초 스킨케어와 클렌징 제품이 대표적이며, 합리적인 가격대가 강점입니다.',
+        descEn: 'Nature-based beauty brand. Known for basic skincare and cleansing products using natural ingredients like rice and aloe, with affordable pricing.',
+        tagsKo: ['자연주의', '쌀', '클렌징', '합리적'],
+        tagsEn: ['Natural', 'Rice', 'Cleansing', 'Affordable'],
+        founded: '2003', parent: 'LG H&H',
+        bestKo: ['라이스 워터 클렌징 오일', '예화담 크림', '알로에 수딩 젤'],
+        bestEn: ['Rice Water Bright Cleansing Oil', 'Yehwadam Cream', 'Aloe Soothing Gel']
+      },
+      {
+        id: 26, name: 'Holika Holika', nameKo: '홀리카 홀리카',
+        category: 'skincare', subcategory: 'fun',
+        skin: ['normal', 'combination'], price: 'budget',
+        logo: 'H', color: '#AB47BC',
+        descKo: '매직 컨셉의 재미있는 뷰티 브랜드. 알로에 수딩 젤과 굿 세라 크림이 인기이며, 독특한 패키지와 합리적인 가격이 특징입니다.',
+        descEn: 'Fun magic-concept beauty brand. Aloe Soothing Gel and Good Cera Cream are popular, featuring unique packaging and affordable prices.',
+        tagsKo: ['펀뷰티', '알로에', '유니크', '합리적'],
+        tagsEn: ['Fun beauty', 'Aloe', 'Unique', 'Affordable'],
+        founded: '2010', parent: 'Enprani',
+        bestKo: ['알로에 99% 수딩 젤', '굿 세라 크림', '피그노즈 블랙헤드 킷'],
+        bestEn: ['Aloe 99% Soothing Gel', 'Good Cera Cream', 'Pig Nose Blackhead Kit']
+      },
+      {
+        id: 27, name: 'Anua', nameKo: '아누아',
+        category: 'skincare', subcategory: 'cleansing',
+        skin: ['oily', 'combination', 'acne'], price: 'budget',
+        logo: 'A', color: '#26A69A',
+        descKo: '어성초 성분에 특화된 스킨케어 브랜드. 어성초 77% 토너가 글로벌 베스트셀러이며, 모공 관리와 유수분 밸런스에 집중하는 제품 라인을 보유하고 있습니다.',
+        descEn: 'Skincare brand specializing in Heartleaf (Houttuynia Cordata). The Heartleaf 77% Toner is a global bestseller, focusing on pore care and oil-moisture balance.',
+        tagsKo: ['어성초', '모공', '토너', '글로벌'],
+        tagsEn: ['Heartleaf', 'Pores', 'Toner', 'Global'],
+        founded: '2020', parent: 'Independent',
+        bestKo: ['어성초 77% 토너', '어성초 클렌징 오일', '나이아신아마이드 세럼'],
+        bestEn: ['Heartleaf 77% Toner', 'Heartleaf Cleansing Oil', 'Niacinamide Serum']
+      },
+      {
+        id: 28, name: 'NARS Korea', nameKo: '나스 코리아',
+        category: 'makeup', subcategory: 'base',
+        skin: ['normal', 'oily'], price: 'premium',
+        logo: 'N', color: '#212121',
+        descKo: 'K-뷰티와 협업하는 글로벌 프리미엄 메이크업 브랜드. 한국 시장 전용 컬러와 포뮬러를 출시하며, 쿠션 파운데이션 라인이 인기입니다.',
+        descEn: 'Global premium makeup brand collaborating with K-beauty. Releases Korea-exclusive colors and formulas, with popular cushion foundation lines.',
+        tagsKo: ['프리미엄', '쿠션', '글로벌', '베이스'],
+        tagsEn: ['Premium', 'Cushion', 'Global', 'Base'],
+        founded: '1994', parent: 'Shiseido',
+        bestKo: ['라이트 리플렉팅 파운데이션', '오르가즘 블러쉬', '파워매트 립스틱'],
+        bestEn: ['Light Reflecting Foundation', 'Orgasm Blush', 'Powermatte Lipstick']
+      },
+      {
+        id: 29, name: 'Mediheal', nameKo: '메디힐',
+        category: 'skincare', subcategory: 'mask',
+        skin: ['normal', 'dry', 'sensitive'], price: 'budget',
+        logo: 'M', color: '#0288D1',
+        descKo: '마스크팩 전문 스킨케어 브랜드. N.M.F 아쿠아링 마스크팩이 대표 제품이며, 다양한 피부 고민별 마스크 라인을 보유하고 있습니다.',
+        descEn: 'Sheet mask specialist skincare brand. The N.M.F Aquaring Mask is the hero product, with various mask lines targeting different skin concerns.',
+        tagsKo: ['마스크팩', 'NMF', '수분', '전문'],
+        tagsEn: ['Sheet mask', 'NMF', 'Hydration', 'Specialist'],
+        founded: '2009', parent: 'L&P Cosmetic',
+        bestKo: ['N.M.F 아쿠아링 앰플 마스크', '티트리 에센셜 마스크', '콜라겐 임팩트 마스크'],
+        bestEn: ['N.M.F Aquaring Ampoule Mask', 'Tea Tree Essential Mask', 'Collagen Impact Mask']
+      },
+      {
+        id: 30, name: 'moonshot', nameKo: '문샷',
+        category: 'makeup', subcategory: 'lip',
+        skin: ['normal', 'oily'], price: 'mid',
+        logo: 'M', color: '#6A1B9A',
+        descKo: 'YG 엔터테인먼트가 론칭한 트렌디 메이크업 브랜드. 글로벌 트렌드를 반영한 감각적인 컬러와 쿠션 제품이 강점입니다.',
+        descEn: 'Trendy makeup brand launched by YG Entertainment. Known for sensory colors and cushion products reflecting global trends.',
+        tagsKo: ['YG', '트렌디', '쿠션', '감각적'],
+        tagsEn: ['YG', 'Trendy', 'Cushion', 'Sensory'],
+        founded: '2014', parent: 'YG Plus',
+        bestKo: ['마이크로핏 쿠션', '크림 페인트 틴트', '글로우 스틱'],
+        bestEn: ['Micro Fit Cushion', 'Cream Paint Tint', 'Glow Stick']
+      },
+      {
+        id: 31, name: 'IOPE', nameKo: '아이오페',
+        category: 'skincare', subcategory: 'derma',
+        skin: ['normal', 'dry', 'combination'], price: 'mid',
+        logo: 'I', color: '#455A64',
+        descKo: '바이오 테크놀로지 기반의 더마 스킨케어 브랜드. 에어쿠션을 최초로 개발한 브랜드이며, 레티놀과 펩타이드 기반의 안티에이징 라인이 대표적입니다.',
+        descEn: 'Bio-technology based derma skincare brand. Pioneer of the air cushion, known for retinol and peptide-based anti-aging lines.',
+        tagsKo: ['에어쿠션원조', '레티놀', '바이오', '안티에이징'],
+        tagsEn: ['Cushion pioneer', 'Retinol', 'Bio', 'Anti-aging'],
+        founded: '1996', parent: 'Amorepacific',
+        bestKo: ['레티놀 엑스퍼트', '에어쿠션', '라이브 리프트 세럼'],
+        bestEn: ['Retinol Expert', 'Air Cushion', 'Live Lift Serum']
+      },
+      {
+        id: 32, name: 'mixsoon', nameKo: '믹순',
+        category: 'skincare', subcategory: 'essence',
+        skin: ['sensitive', 'normal', 'dry'], price: 'budget',
+        logo: 'M', color: '#A1887F',
+        descKo: '단일 성분 에센스에 특화된 미니멀 스킨케어 브랜드. 콩 에센스와 갈락토미세스 에센스가 대표적이며, 불필요한 성분을 배제한 심플한 포뮬러가 강점입니다.',
+        descEn: 'Minimal skincare brand specializing in single-ingredient essences. Bean Essence and Galactomyces Essence are key products, featuring simple formulas without unnecessary ingredients.',
+        tagsKo: ['미니멀', '단일성분', '콩에센스', '심플'],
+        tagsEn: ['Minimal', 'Single ingredient', 'Bean essence', 'Simple'],
+        founded: '2020', parent: 'Independent',
+        bestKo: ['콩 에센스', '갈락토미세스 에센스', '센텔라 에센스'],
+        bestEn: ['Bean Essence', 'Galactomyces Essence', 'Centella Essence']
+      }
+    ];
 
     const i18n = {
       ko: {
-        ui: {
-          pageTitle: 'K-뷰티 브랜드 인스타그램 콘텐츠 생성기',
-          badgeList: ['K-뷰티 톤 & 무드', '릴스 + 캐러셀', '브랜드 맞춤'],
-          titleHtml: 'K-뷰티 브랜드 전문<br />인스타그램 콘텐츠 생성기',
-          subtitle: '제품 한 줄 설명만 있어도 바로 사용할 수 있는 캡션, 스토리, 릴스 스크립트까지 자동으로 구성합니다.',
-          tagList: ['글로우', '스킨케어 루틴', '데일리 셀프케어', '클린 뷰티'],
-          heroTitle: '오늘의 콘텐츠 키포인트',
-          heroDesc: '알고리즘 친화적인 구조 + 브랜드 스토리 + 전환 CTA를 한번에.',
-          statLabels: ['콘텐츠 포맷', '해시태그', '컷 기획'],
-          formTitle: '브랜드 정보를 입력하세요',
-          formDesc: '입력값에 따라 자연스럽게 톤이 맞춰집니다. 비워도 기본값으로 자동 생성됩니다.',
-          labels: {
-            brand: '브랜드명',
-            product: '제품명',
-            category: '제품 카테고리',
-            mood: '톤 & 무드',
-            audience: '타깃 고객',
-            benefit: '핵심 효능',
-            ingredient: '키 성분/텍스처',
-            goal: '캠페인 목표',
-            notes: '브랜드 키워드 (선택)'
-          },
-          placeholders: {
-            brand: '예: LUMIÉ, Dew&Day',
-            product: '예: 글로우 세럼',
-            audience: '예: 20대 민감성 피부',
-            benefit: '예: 속광, 진정, 톤업',
-            ingredient: '예: 시카 + 수분 젤',
-            notes: '예: 비건, 피부장벽, 베이지 톤 패키지'
-          },
-          buttons: {
-            generate: '콘텐츠 생성',
-            random: '랜덤 템플릿'
-          },
-          resultsTitle: '인스타그램 결과물',
-          resultsDesc: '각 카드의 복사 버튼을 눌러 바로 사용할 수 있어요.',
-          previewTitle: '피드 미리보기',
-          previewDesc: '생성된 톤과 어울리는 비주얼 방향을 참고하세요.',
-          previewCarouselTitle: '5컷 캐러셀 방향',
-          previewCarouselDesc: '1. 문제 제기 → 2. 성분 클로즈업 → 3. 텍스처 → 4. 사용 전/후 → 5. CTA',
-          copy: '복사',
-          copied: '복사됨',
-          cardTitles: [
-            '캡션 (짧은 버전)',
-            '캡션 (스토리텔링 버전)',
-            '캐러셀 구성안',
-            '릴스 15초 스크립트',
-            '스토리 3프레임',
-            '촬영 컷 리스트',
-            '해시태그 세트',
-            '대체 텍스트(ALT)'
-          ]
-        },
-        options: {
-          category: ['스킨케어', '메이크업', '선케어', '바디케어', '헤어케어'],
-          mood: ['감각적이고 시크', '친근하고 상큼', '럭셔리하고 미니멀', '클린하고 힐링'],
-          goal: ['신제품 런칭', '재구매 유도', '리뷰 확보', '브랜드 인지도']
-        },
-        templates: {
-          hooks: [
-            '오늘 피부 컨디션, 여기서 달라져요.',
-            '속부터 차오르는 광, 단 하루 만에.',
-            '데일리 루틴에 끼우면 끝나는 변화.',
-            '피부가 편안하다고 말하는 순간.',
-            '지친 피부에 리셋 버튼을 눌러보세요.'
-          ],
-          ctas: [
-            'DM으로 피부 고민을 알려주세요.',
-            '지금 스토어에서 한정 혜택을 확인해요.',
-            '저장해두고 오늘 밤 루틴에 추가하세요.',
-            '친구에게 공유하고 함께 테스트해요.',
-            '댓글로 피부 타입을 남겨주세요.'
-          ],
-          textures: [
-            '가볍게 스며드는 젤 텍스처',
-            '보송하게 마무리되는 세미 매트',
-            '촉촉함이 오래가는 크림',
-            '산뜻한 워터 타입',
-            '밀착되는 세럼 핏'
-          ],
-          hashtags: [
-            '#K뷰티', '#Kbeauty', '#스킨케어', '#데일리루틴', '#글로우피부', '#촉촉보습',
-            '#피부진정', '#클린뷰티', '#비건뷰티', '#민감성피부', '#세럼추천', '#토너추천',
-            '#크림추천', '#선케어', '#피부장벽', '#메이크업베이스', '#여름스킨케어',
-            '#겨울보습', '#데일리케어', '#뷰티스타그램', '#스킨케어추천', '#인스타그램마케팅'
-          ],
-          carouselTemplates: [
-            '1) 피부 고민 한 줄 질문\n2) 핵심 성분 1개 클로즈업\n3) 텍스처 + 발림성\n4) 사용 전/후 or 체감 포인트\n5) 루틴 마무리 + CTA',
-            '1) 계절/상황 공감\n2) 솔루션 제시\n3) 제품 특징 3가지\n4) 사용법 3스텝\n5) 후기 요약 + 저장 유도',
-            '1) 문제 상황 이미지\n2) 제품 한 컷 + 문구\n3) 성분/기술 설명\n4) 사용 감성\n5) 이벤트/구매 안내'
-          ],
-          reelsTemplates: [
-            '0-2초: 피부 고민 훅 + 자막\n2-6초: 텍스처 클로즈업\n6-10초: 사용 전/후 or 광 표현\n10-13초: 핵심 성분/효능 2줄\n13-15초: CTA + 브랜드 로고',
-            '0-3초: 계절 상황 공감\n3-7초: 제품 등장 + 사용 컷\n7-11초: 결과 포인트 2개\n11-15초: 이벤트/리뷰 요청'
-          ],
-          captionShort: ({ hook, brand, product, audience, benefit, ingredient, goal, cta }) =>
-            `${hook}\n\n${brand}의 ${product}는 ${audience}을 위해 ${benefit}을 집중 케어합니다. ${ingredient}로 마무리는 가볍고, 피부는 편안하게.\n\n${goal}에 맞춰 지금 이 분위기로 가보세요. ${cta}`,
-          captionLong: ({ hook, brand, product, category, benefit, ingredient, notes, mood, goal, cta }) =>
-            `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit} 집중 케어\n- ${ingredient}\n- ${notes}\n\n사용 후 피부가 느끼는 변화는 더 단순합니다: 편안함, 탄탄함, 그리고 자연스러운 광.\n\n오늘은 ${mood} 톤으로 풀어냈어요. ${goal} 캠페인에 어울리는 비주얼로 세팅해보세요.\n\n${cta}`,
-          story: ({ product }) =>
-            `프레임 1: 공감 질문 + 고민 키워드\n프레임 2: ${product} 텍스처/성분 컷\n프레임 3: 사용 결과 + 스와이프 CTA`,
-          shotList: () =>
-            `컷1: 제품 단독 + 클린 배경\n컷2: 텍스처 클로즈업\n컷3: 사용 중 손/피부 컷\n컷4: 전/후 느낌 비교\n컷5: 패키지 + 브랜드 로고`,
-          altText: ({ brand, product, ingredient, mood, benefit }) =>
-            `${brand}의 ${product} 제품 클로즈업. ${ingredient} 텍스처가 보이고, ${mood} 톤의 배경에서 ${benefit} 메시지를 전달합니다.`,
-          previewHeadline: '하루 종일 무너짐 없는 속광'
-        }
+        pageTitle: 'K-뷰티 브랜드 찾기',
+        titleText: 'K-뷰티 브랜드 찾기',
+        subtitle: '카테고리, 피부 타입, 가격대별로 나에게 딱 맞는 K-뷰티 브랜드를 찾아보세요.',
+        searchPlaceholder: '브랜드명 또는 키워드로 검색...',
+        statLabelBrands: '브랜드',
+        statLabelCategories: '카테고리',
+        statLabelShowing: '검색 결과',
+        filterCategory: '카테고리',
+        filterSkin: '피부 타입',
+        filterPrice: '가격대',
+        categories: { all: '전체', skincare: '스킨케어', makeup: '메이크업' },
+        skinTypes: { all: '전체', sensitive: '민감성', dry: '건성', oily: '지성', combination: '복합성', acne: '여드름', normal: '일반' },
+        priceRanges: { all: '전체', budget: '가성비', mid: '중간', premium: '프리미엄' },
+        noResults: '검색 결과가 없습니다. 다른 필터를 시도해보세요.',
+        founded: '설립',
+        parent: '모회사',
+        bestProducts: '대표 제품',
+        viewDetail: '자세히 보기'
       },
       en: {
-        ui: {
-          pageTitle: 'K-Beauty Instagram Content Generator',
-          badgeList: ['K-beauty tone & mood', 'Reels + carousel', 'Brand-tailored'],
-          titleHtml: 'K-Beauty Brand<br />Instagram Content Generator',
-          subtitle: 'Create ready-to-post captions, stories, and Reels scripts from a single product line.',
-          tagList: ['Glow', 'Skincare routine', 'Daily self-care', 'Clean beauty'],
-          heroTitle: 'Today\'s Content Key Points',
-          heroDesc: 'Algorithm-friendly structure + brand story + conversion CTA in one flow.',
-          statLabels: ['Content formats', 'Hashtags', 'Shot plan'],
-          formTitle: 'Enter brand details',
-          formDesc: 'The tone adapts automatically. Leave fields empty to use defaults.',
-          labels: {
-            brand: 'Brand name',
-            product: 'Product name',
-            category: 'Category',
-            mood: 'Tone & mood',
-            audience: 'Target audience',
-            benefit: 'Key benefits',
-            ingredient: 'Key ingredient/texture',
-            goal: 'Campaign goal',
-            notes: 'Brand keywords (optional)'
-          },
-          placeholders: {
-            brand: 'e.g., LUMIÉ, Dew&Day',
-            product: 'e.g., Glow Serum',
-            audience: 'e.g., Sensitive skin in 20s',
-            benefit: 'e.g., glow, calming, brightening',
-            ingredient: 'e.g., cica + aqua gel',
-            notes: 'e.g., vegan, skin barrier, beige packaging'
-          },
-          buttons: {
-            generate: 'Generate content',
-            random: 'Random template'
-          },
-          resultsTitle: 'Instagram outputs',
-          resultsDesc: 'Use the copy button on each card to paste directly.',
-          previewTitle: 'Feed preview',
-          previewDesc: 'Use this as a visual direction aligned with the generated tone.',
-          previewCarouselTitle: '5-frame carousel flow',
-          previewCarouselDesc: '1. Problem → 2. Ingredient close-up → 3. Texture → 4. Before/after → 5. CTA',
-          copy: 'Copy',
-          copied: 'Copied',
-          cardTitles: [
-            'Caption (short)',
-            'Caption (storytelling)',
-            'Carousel outline',
-            '15s Reels script',
-            'Story (3 frames)',
-            'Shot list',
-            'Hashtag set',
-            'Alt text'
-          ]
-        },
-        options: {
-          category: ['Skincare', 'Makeup', 'Suncare', 'Bodycare', 'Haircare'],
-          mood: ['Sensory & chic', 'Friendly & fresh', 'Luxury & minimal', 'Clean & calming'],
-          goal: ['New launch', 'Repeat purchase', 'Collect reviews', 'Brand awareness']
-        },
-        templates: {
-          hooks: [
-            'Your skin shifts right here, right now.',
-            'Glow that builds from within in just one day.',
-            'A small swap that changes your whole routine.',
-            'The moment your skin feels truly at ease.',
-            'Tap reset for tired skin.'
-          ],
-          ctas: [
-            'DM us your skin concerns.',
-            'Check today\'s limited offer in the store.',
-            'Save this and add it to tonight\'s routine.',
-            'Share with a friend and test together.',
-            'Drop your skin type in the comments.'
-          ],
-          textures: [
-            'a lightweight gel texture',
-            'a soft semi-matte finish',
-            'a long-lasting creamy moisture',
-            'a fresh watery type',
-            'a serum-fit texture that hugs the skin'
-          ],
-          hashtags: [
-            '#Kbeauty', '#skincare', '#dailyglow', '#glowingskin', '#moisturizing', '#calmingskin',
-            '#cleanbeauty', '#veganbeauty', '#sensitiveskin', '#serum', '#toner', '#cream',
-            '#suncare', '#skinbarrier', '#makeupbase', '#summerbeauty', '#wintercare', '#selfcare',
-            '#beautygram', '#skincareroutine', '#instagrammarketing', '#beautycontent'
-          ],
-          carouselTemplates: [
-            '1) One-line skin concern\n2) Hero ingredient close-up\n3) Texture + spread\n4) Before/after or feel\n5) Routine finish + CTA',
-            '1) Seasonal empathy\n2) Solution reveal\n3) 3 product highlights\n4) 3-step usage\n5) Review summary + save prompt',
-            '1) Problem visual\n2) Product shot + line\n3) Ingredient/tech story\n4) Sensory usage\n5) Event/purchase info'
-          ],
-          reelsTemplates: [
-            '0-2s: Skin concern hook + caption\n2-6s: Texture close-up\n6-10s: Before/after or glow\n10-13s: 2 benefit lines\n13-15s: CTA + logo',
-            '0-3s: Seasonal pain point\n3-7s: Product reveal + usage\n7-11s: 2 result points\n11-15s: Event/review ask'
-          ],
-          captionShort: ({ hook, brand, product, audience, benefit, ingredient, goal, cta }) =>
-            `${hook}\n\n${brand}\'s ${product} is designed for ${audience}, focusing on ${benefit}. Finished with ${ingredient} so it feels light yet calming.\n\nMatch the mood for your ${goal}. ${cta}`,
-          captionLong: ({ hook, brand, product, category, benefit, ingredient, notes, mood, goal, cta }) =>
-            `"${hook}"\n\n${brand} ${product} (${category})\n- ${benefit}\n- ${ingredient}\n- ${notes}\n\nThe post-application feel is simple: comfort, firmness, and a natural glow.\n\nToday we styled it in a ${mood} tone. Build visuals that align with your ${goal}.\n\n${cta}`,
-          story: ({ product }) =>
-            `Frame 1: Relatable question + pain keyword\nFrame 2: ${product} texture/ingredient shot\nFrame 3: Result + swipe CTA`,
-          shotList: () =>
-            `Shot 1: Product hero + clean background\nShot 2: Texture close-up\nShot 3: In-use hands/skin\nShot 4: Before/after feel\nShot 5: Packaging + logo`,
-          altText: ({ brand, product, ingredient, mood, benefit }) =>
-            `Close-up of ${brand} ${product}. The ${ingredient} texture appears against a ${mood} background with messaging about ${benefit}.`,
-          previewHeadline: 'All-day glow that doesn\'t fade'
-        }
+        pageTitle: 'K-Beauty Brand Finder',
+        titleText: 'K-Beauty Brand Finder',
+        subtitle: 'Discover the perfect K-beauty brand for you by category, skin type, and price range.',
+        searchPlaceholder: 'Search by brand name or keyword...',
+        statLabelBrands: 'Brands',
+        statLabelCategories: 'Categories',
+        statLabelShowing: 'Results',
+        filterCategory: 'Category',
+        filterSkin: 'Skin Type',
+        filterPrice: 'Price Range',
+        categories: { all: 'All', skincare: 'Skincare', makeup: 'Makeup' },
+        skinTypes: { all: 'All', sensitive: 'Sensitive', dry: 'Dry', oily: 'Oily', combination: 'Combination', acne: 'Acne-prone', normal: 'Normal' },
+        priceRanges: { all: 'All', budget: 'Budget', mid: 'Mid-range', premium: 'Premium' },
+        noResults: 'No results found. Try different filters.',
+        founded: 'Founded',
+        parent: 'Parent',
+        bestProducts: 'Best Products',
+        viewDetail: 'View Details'
       }
     };
 
     let currentLang = 'ko';
+    let activeCategory = 'all';
+    let activeSkin = 'all';
+    let activePrice = 'all';
 
-    function valueOrDefault(value, fallback) {
-      return value && value.trim().length > 0 ? value.trim() : fallback;
+    function buildChips(containerId, options, activeValue, onClick) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      Object.entries(options).forEach(([key, label]) => {
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (key === activeValue ? ' active' : '');
+        chip.textContent = label;
+        chip.type = 'button';
+        chip.addEventListener('click', () => onClick(key));
+        container.appendChild(chip);
+      });
     }
 
-    function pick(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    function getFilteredBrands() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      return brands.filter(b => {
+        if (activeCategory !== 'all' && b.category !== activeCategory) return false;
+        if (activeSkin !== 'all' && !b.skin.includes(activeSkin)) return false;
+        if (activePrice !== 'all' && b.price !== activePrice) return false;
+        if (query) {
+          const lang = currentLang;
+          const searchFields = [
+            b.name.toLowerCase(),
+            b.nameKo.toLowerCase(),
+            b[lang === 'ko' ? 'descKo' : 'descEn'].toLowerCase(),
+            ...(lang === 'ko' ? b.tagsKo : b.tagsEn).map(t => t.toLowerCase()),
+            ...(lang === 'ko' ? b.bestKo : b.bestEn).map(p => p.toLowerCase())
+          ];
+          return searchFields.some(f => f.includes(query));
+        }
+        return true;
+      });
     }
 
-    function generateContent() {
-      const pack = i18n[currentLang];
-      const defaults = currentLang === 'ko'
-        ? {
-            brand: 'LUMIÉ',
-            product: '글로우 세럼',
-            audience: '피부 컨디션이 쉽게 흔들리는 분',
-            benefit: '속광, 진정, 촉촉함',
-            notes: '피부 장벽 케어'
-          }
-        : {
-            brand: 'LUMIÉ',
-            product: 'Glow Serum',
-            audience: 'sensitive skin in their 20s',
-            benefit: 'glow, calming, hydration',
-            notes: 'skin barrier care'
-          };
+    function renderBrands() {
+      const grid = document.getElementById('brandGrid');
+      const noResults = document.getElementById('noResults');
+      const filtered = getFilteredBrands();
 
-      const brand = valueOrDefault(fields.brand.value, defaults.brand);
-      const product = valueOrDefault(fields.product.value, defaults.product);
-      const category = fields.category.value;
-      const mood = fields.mood.value;
-      const audience = valueOrDefault(fields.audience.value, defaults.audience);
-      const benefit = valueOrDefault(fields.benefit.value, defaults.benefit);
-      const ingredient = valueOrDefault(fields.ingredient.value, pick(pack.templates.textures));
-      const goal = fields.goal.value;
-      const notes = valueOrDefault(fields.notes.value, defaults.notes);
+      document.getElementById('statShowing').textContent = filtered.length;
 
-      const hook = pick(pack.templates.hooks);
-      const cta = pick(pack.templates.ctas);
-      const carousel = pick(pack.templates.carouselTemplates);
-      const reels = pick(pack.templates.reelsTemplates);
-      const hashList = pack.templates.hashtags.sort(() => 0.5 - Math.random()).slice(0, 20).join(' ');
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
 
-      const captionShort = pack.templates.captionShort({
-        hook,
-        brand,
-        product,
-        audience,
-        benefit,
-        ingredient,
-        goal,
-        cta
-      });
+      noResults.style.display = 'none';
+      grid.innerHTML = '';
 
-      const captionLong = pack.templates.captionLong({
-        hook,
-        brand,
-        product,
-        category,
-        benefit,
-        ingredient,
-        notes,
-        mood,
-        goal,
-        cta
-      });
+      const lang = currentLang;
+      const pack = i18n[lang];
+      const priceLabels = pack.priceRanges;
+      const catLabels = pack.categories;
 
-      const story = pack.templates.story({ product });
-      const shotList = pack.templates.shotList();
-      const altText = pack.templates.altText({ brand, product, ingredient, mood, benefit });
+      filtered.forEach((b, i) => {
+        const card = document.createElement('div');
+        card.className = 'brand-card';
+        card.style.animationDelay = `${i * 0.04}s`;
 
-      return {
-        brand,
-        headline: currentLang === 'ko' ? `${product}로 완성하는 ${mood} 루틴` : `${mood} routine with ${product}`,
-        captionShort,
-        captionLong,
-        carousel,
-        reels,
-        story,
-        shotList,
-        hashtags: hashList,
-        altText
-      };
-    }
+        const tags = (lang === 'ko' ? b.tagsKo : b.tagsEn).slice(0, 4);
+        const desc = lang === 'ko' ? b.descKo : b.descEn;
+        const displayName = lang === 'ko' ? `${b.nameKo} (${b.name})` : b.name;
+        const catLabel = catLabels[b.category] || b.category;
+        const priceLabel = priceLabels[b.price] || b.price;
 
-    function renderResults(content) {
-      const results = document.getElementById('results');
-      results.innerHTML = '';
-
-      const cards = i18n[currentLang].ui.cardTitles.map((title, index) => {
-        const values = [
-          content.captionShort,
-          content.captionLong,
-          content.carousel,
-          content.reels,
-          content.story,
-          content.shotList,
-          content.hashtags,
-          content.altText
-        ];
-        return { title, value: values[index] };
-      });
-
-      cards.forEach((card, index) => {
-        const el = document.createElement('div');
-        el.className = 'result-card';
-        el.style.animationDelay = `${index * 0.05}s`;
-        el.innerHTML = `
-          <button class="copy-btn" type="button">${i18n[currentLang].ui.copy}</button>
-          <h4>${card.title}</h4>
-          <pre>${card.value}</pre>
+        card.innerHTML = `
+          <div class="brand-header">
+            <div class="brand-logo" style="background:${b.color}">${b.logo}</div>
+            <div class="brand-info">
+              <h3>${displayName}</h3>
+              <span>${catLabel} · ${priceLabel}</span>
+            </div>
+          </div>
+          <p class="brand-desc">${desc.length > 80 ? desc.slice(0, 80) + '...' : desc}</p>
+          <div class="brand-tags">
+            ${tags.map(t => `<span class="brand-tag">${t}</span>`).join('')}
+          </div>
+          <div class="brand-meta">
+            <span>${pack.founded} ${b.founded}</span>
+            <span>${pack.parent}: ${b.parent}</span>
+          </div>
         `;
 
-        el.querySelector('.copy-btn').addEventListener('click', () => {
-          copyText(card.value, el);
-        });
-
-        results.appendChild(el);
+        card.addEventListener('click', () => openDetail(b));
+        grid.appendChild(card);
       });
     }
 
-    function copyText(text, card) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-          showCopied(card);
-        });
-      } else {
-        const temp = document.createElement('textarea');
-        temp.value = text;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        showCopied(card);
-      }
+    function openDetail(b) {
+      const overlay = document.getElementById('detailOverlay');
+      const body = document.getElementById('detailBody');
+      const lang = currentLang;
+      const pack = i18n[lang];
+
+      const displayName = lang === 'ko' ? `${b.nameKo} (${b.name})` : b.name;
+      const desc = lang === 'ko' ? b.descKo : b.descEn;
+      const tags = lang === 'ko' ? b.tagsKo : b.tagsEn;
+      const best = lang === 'ko' ? b.bestKo : b.bestEn;
+      const catLabel = pack.categories[b.category] || b.category;
+      const priceLabel = pack.priceRanges[b.price] || b.price;
+
+      body.innerHTML = `
+        <div class="detail-logo" style="background:${b.color}">${b.logo}</div>
+        <div class="detail-name">${displayName}</div>
+        <div class="detail-category">${catLabel} · ${priceLabel} · ${pack.founded} ${b.founded}</div>
+        <p class="detail-desc">${desc}</p>
+        <div class="detail-tags">
+          ${tags.map(t => `<span class="brand-tag">${t}</span>`).join('')}
+        </div>
+        <div class="detail-section">
+          <h4>${pack.bestProducts}</h4>
+          <ul>
+            ${best.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="detail-section">
+          <h4>${pack.parent}</h4>
+          <p>${b.parent}</p>
+        </div>
+      `;
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
-    function showCopied(card) {
-      const btn = card.querySelector('.copy-btn');
-      const original = btn.textContent;
-      btn.textContent = i18n[currentLang].ui.copied;
-      setTimeout(() => {
-        btn.textContent = original;
-      }, 1200);
+    function closeDetail() {
+      document.getElementById('detailOverlay').classList.remove('open');
+      document.body.style.overflow = '';
     }
 
-    function randomize() {
-      const presets = currentLang === 'ko' ? [
-        {
-          brand: 'LUMIÉ',
-          product: '글로우 세럼',
-          audience: '피부가 쉽게 건조해지는 20대',
-          benefit: '속광 + 수분 충전',
-          ingredient: '히알루론 + 마이크로 캡슐',
-          notes: '비건, 파스텔 톤 패키지'
-        },
-        {
-          brand: 'Dew&Day',
-          product: '카밍 토너 패드',
-          audience: '마스크 자극이 있는 민감 피부',
-          benefit: '진정 + 열감 완화',
-          ingredient: '시카 + 판테놀',
-          notes: '클린 뷰티, 무향'
-        },
-        {
-          brand: 'Studio Beige',
-          product: '블러 틴트',
-          audience: '데일리 메이크업을 즐기는 2030',
-          benefit: '보송함 + 생기',
-          ingredient: '벨벳 피니시',
-          notes: '누드 컬러, 미니멀 패키지'
-        }
-      ] : [
-        {
-          brand: 'LUMIÉ',
-          product: 'Glow Serum',
-          audience: 'Dry, easily dehydrated skin in 20s',
-          benefit: 'Glow + hydration boost',
-          ingredient: 'Hyaluronic acid + micro capsules',
-          notes: 'Vegan, pastel packaging'
-        },
-        {
-          brand: 'Dew&Day',
-          product: 'Calming Toner Pads',
-          audience: 'Sensitive skin with mask irritation',
-          benefit: 'Soothing + cooling',
-          ingredient: 'Cica + panthenol',
-          notes: 'Clean beauty, fragrance-free'
-        },
-        {
-          brand: 'Studio Beige',
-          product: 'Blur Tint',
-          audience: '2030s who love daily makeup',
-          benefit: 'Soft-matte + vitality',
-          ingredient: 'Velvet finish',
-          notes: 'Nude tones, minimal packaging'
-        }
-      ];
-
-      const preset = pick(presets);
-      fields.brand.value = preset.brand;
-      fields.product.value = preset.product;
-      fields.audience.value = preset.audience;
-      fields.benefit.value = preset.benefit;
-      fields.ingredient.value = preset.ingredient;
-      fields.notes.value = preset.notes;
-    }
-
-    document.getElementById('generateBtn').addEventListener('click', () => {
-      const content = generateContent();
-      renderResults(content);
-      document.getElementById('previewBrand').textContent = content.brand;
-      document.getElementById('previewHeadline').textContent = content.headline;
-      document.getElementById('previewCaption').textContent = content.hashtags.split(' ').slice(0, 3).join(' ');
+    document.getElementById('detailClose').addEventListener('click', closeDetail);
+    document.getElementById('detailOverlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeDetail();
     });
 
-    document.getElementById('randomBtn').addEventListener('click', () => {
-      randomize();
-    });
-
-    function setLanguage(lang) {
-      currentLang = lang;
+    function updateUI() {
       const pack = i18n[currentLang];
 
+      document.title = pack.pageTitle;
       document.documentElement.lang = currentLang;
-      document.title = pack.ui.pageTitle;
+      document.getElementById('pageTitle').textContent = pack.titleText;
+      document.getElementById('pageSubtitle').textContent = pack.subtitle;
+      document.getElementById('searchInput').placeholder = pack.searchPlaceholder;
+      document.getElementById('statLabelBrands').textContent = pack.statLabelBrands;
+      document.getElementById('statLabelCategories').textContent = pack.statLabelCategories;
+      document.getElementById('statLabelShowing').textContent = pack.statLabelShowing;
+      document.getElementById('filterLabelCategory').textContent = pack.filterCategory;
+      document.getElementById('filterLabelSkin').textContent = pack.filterSkin;
+      document.getElementById('filterLabelPrice').textContent = pack.filterPrice;
+      document.getElementById('noResultsText').textContent = pack.noResults;
 
-      const badgeRow = document.getElementById('badgeRow');
-      badgeRow.innerHTML = pack.ui.badgeList.map((text) => `<span class="badge">${text}</span>`).join('');
-
-      document.getElementById('pageTitle').innerHTML = pack.ui.titleHtml;
-      document.getElementById('pageSubtitle').textContent = pack.ui.subtitle;
-
-      const tagList = document.getElementById('tagList');
-      tagList.innerHTML = pack.ui.tagList.map((text) => `<span class="tag">${text}</span>`).join('');
-
-      document.getElementById('heroTitle').textContent = pack.ui.heroTitle;
-      document.getElementById('heroDesc').textContent = pack.ui.heroDesc;
-      document.getElementById('statLabel1').textContent = pack.ui.statLabels[0];
-      document.getElementById('statLabel2').textContent = pack.ui.statLabels[1];
-      document.getElementById('statLabel3').textContent = pack.ui.statLabels[2];
-
-      document.getElementById('formTitle').textContent = pack.ui.formTitle;
-      document.getElementById('formDesc').textContent = pack.ui.formDesc;
-      document.getElementById('labelBrand').textContent = pack.ui.labels.brand;
-      document.getElementById('labelProduct').textContent = pack.ui.labels.product;
-      document.getElementById('labelCategory').textContent = pack.ui.labels.category;
-      document.getElementById('labelMood').textContent = pack.ui.labels.mood;
-      document.getElementById('labelAudience').textContent = pack.ui.labels.audience;
-      document.getElementById('labelBenefit').textContent = pack.ui.labels.benefit;
-      document.getElementById('labelIngredient').textContent = pack.ui.labels.ingredient;
-      document.getElementById('labelGoal').textContent = pack.ui.labels.goal;
-      document.getElementById('labelNotes').textContent = pack.ui.labels.notes;
-
-      fields.brand.placeholder = pack.ui.placeholders.brand;
-      fields.product.placeholder = pack.ui.placeholders.product;
-      fields.audience.placeholder = pack.ui.placeholders.audience;
-      fields.benefit.placeholder = pack.ui.placeholders.benefit;
-      fields.ingredient.placeholder = pack.ui.placeholders.ingredient;
-      fields.notes.placeholder = pack.ui.placeholders.notes;
-
-      const setOptions = (select, options) => {
-        const previous = select.value;
-        select.innerHTML = options.map((option) => `<option value="${option}">${option}</option>`).join('');
-        if (options.includes(previous)) {
-          select.value = previous;
-        }
-      };
-
-      setOptions(fields.category, pack.options.category);
-      setOptions(fields.mood, pack.options.mood);
-      setOptions(fields.goal, pack.options.goal);
-
-      document.getElementById('generateBtn').textContent = pack.ui.buttons.generate;
-      document.getElementById('randomBtn').textContent = pack.ui.buttons.random;
-
-      document.getElementById('resultsTitle').textContent = pack.ui.resultsTitle;
-      document.getElementById('resultsDesc').textContent = pack.ui.resultsDesc;
-      document.getElementById('previewTitle').textContent = pack.ui.previewTitle;
-      document.getElementById('previewDesc').textContent = pack.ui.previewDesc;
-      document.getElementById('previewCarouselTitle').textContent = pack.ui.previewCarouselTitle;
-      document.getElementById('previewCarouselDesc').textContent = pack.ui.previewCarouselDesc;
-
-      document.querySelectorAll('#langSwitch button').forEach((btn) => {
+      document.querySelectorAll('#langSwitch button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === currentLang);
       });
 
-      const content = generateContent();
-      renderResults(content);
-      document.getElementById('previewBrand').textContent = content.brand;
-      document.getElementById('previewHeadline').textContent = content.headline || pack.templates.previewHeadline;
-      document.getElementById('previewCaption').textContent = content.hashtags.split(' ').slice(0, 3).join(' ');
+      buildChips('categoryChips', pack.categories, activeCategory, (key) => {
+        activeCategory = key;
+        updateUI();
+      });
+
+      buildChips('skinChips', pack.skinTypes, activeSkin, (key) => {
+        activeSkin = key;
+        updateUI();
+      });
+
+      buildChips('priceChips', pack.priceRanges, activePrice, (key) => {
+        activePrice = key;
+        updateUI();
+      });
+
+      renderBrands();
     }
 
-    document.getElementById('langSwitch').addEventListener('click', (event) => {
-      const lang = event.target.dataset.lang;
+    document.getElementById('langSwitch').addEventListener('click', (e) => {
+      const lang = e.target.dataset.lang;
       if (lang) {
-        setLanguage(lang);
+        currentLang = lang;
+        updateUI();
       }
     });
 
-    // 테마 토글
+    document.getElementById('searchInput').addEventListener('input', () => {
+      renderBrands();
+    });
+
+    // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
 
     function setTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
-      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      themeToggle.textContent = theme === 'dark' ? '\u2600\uFE0F' : '\uD83C\uDF19';
       localStorage.setItem('theme', theme);
     }
 
@@ -1161,9 +1259,7 @@
     });
 
     initTheme();
-
-    // 초기 프리뷰
-    setLanguage('ko');
+    updateUI();
   </script>
 </body>
 </html>
